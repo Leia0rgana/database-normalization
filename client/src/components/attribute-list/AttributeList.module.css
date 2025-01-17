@@ -1,0 +1,6 @@
+.attributeList {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  padding: 0;
+}
