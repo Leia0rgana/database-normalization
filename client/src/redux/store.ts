@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import attributeListReducer from './slices/attributeListSlice';
+import tableSchemaReducer from './slices/tableSchemaSlice';
 
 export const store = configureStore({
   reducer: {
-    attributeList: attributeListReducer,
+    tableSchema: tableSchemaReducer,
   },
 });
 
