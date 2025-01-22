@@ -1,5 +1,12 @@
+.formContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
 .attributeForm {
-  width: 500px;
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -9,4 +16,9 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+}
+
+.formButton {
+  width: fit-content;
+  padding: 5px;
 }

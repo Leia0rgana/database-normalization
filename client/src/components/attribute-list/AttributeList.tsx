@@ -1,6 +1,6 @@
 import style from './AttributeList.module.css';
 import { useAppSelector } from '../../redux/hooks';
-import { selectAttributeList } from '../../redux/slices/attributeListSlice';
+import { selectAttributeList } from '../../redux/slices/tableSchemaSlice';
 import { Attribute } from '../attribute';
 
 export const AttributeList = () => {

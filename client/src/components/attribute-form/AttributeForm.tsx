@@ -1,13 +1,21 @@
 import React from 'react';
 import style from './AttributeForm.module.css';
-import { useAppDispatch } from '../../redux/hooks';
-import { setAttributeList } from '../../redux/slices/attributeListSlice';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import {
+  selectAttributeList,
+  setAttributeList,
+} from '../../redux/slices/tableSchemaSlice';
+// import { Dropdown } from '../UI/dropdown';
+
+// type AttributeFormProps = {
+//   setIsFormShown: (item: boolean) => void;
+// };
 
 export const AttributeForm = () => {
   const [name, setName] = React.useState<string>('');
-  const [type, setType] = React.useState<string>('int');
   const [isPrimaryKey, setIsPrimaryKey] = React.useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const attributeListSelector = useAppSelector(selectAttributeList);
 
   const handleNameChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
@@ -17,30 +25,31 @@ export const AttributeForm = () => {
     setIsPrimaryKey(!isPrimaryKey);
   };
 
-  const handleSelect: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-    setType(e.target.value);
-  };
-
-  const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleAdd: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
-    setName('');
-    setType('int');
-    setIsPrimaryKey(false);
 
-    dispatch(
-      setAttributeList({
-        name: name,
-        type: type,
-        isPrimaryKey,
-      })
-    );
+    const isUnique = !attributeListSelector.find((item) => item.name === name);
+
+    if (isUnique) {
+      dispatch(
+        setAttributeList({
+          name: name,
+          isPrimaryKey,
+        })
+      );
+    } else {
+      console.log('element already exists'); // todo throw error
+    }
+
+    setName('');
+    setIsPrimaryKey(false);
   };
 
   return (
-    <>
+    <div className={style.formContainer}>
       <form className={style.attributeForm}>
         <span className={style.formGroup}>
-          <label htmlFor="name">Название</label>
+          <label htmlFor="name">Имя</label>
           <input
             type="text"
             name="name"
@@ -48,18 +57,6 @@ export const AttributeForm = () => {
             onChange={handleNameChange}
             className=""
           />
-        </span>
-        <span className={style.formGroup}>
-          <label htmlFor="type">Тип</label>
-          <select
-            name="type"
-            onChange={handleSelect}
-            className=" "
-            value={type}
-          >
-            <option value="int">INTEGER</option>
-            <option value="text">TEXT</option>
-          </select>
         </span>
         <span className={style.formGroup}>
           <label htmlFor="isPrimaryKey">ПК</label>
@@ -70,8 +67,14 @@ export const AttributeForm = () => {
             onChange={handleCheckbox}
           />
         </span>
+        <span className={style.formGroup}>
+          <label htmlFor="type">ВК</label>
+          {/* <Dropdown list={list} /> */}
+        </span>
       </form>
-      <button onClick={handleSubmit}>Добавить</button>
-    </>
+      <button className={style.formButton} onClick={handleAdd} disabled={!name}>
+        Добавить
+      </button>
+    </div>
   );
 };
