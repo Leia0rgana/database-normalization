@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import express, { Express, Request, Response } from 'express';
 import TableInfoModel from './models/tableInfo';
 import morgan from 'morgan';
@@ -7,6 +8,7 @@ import morgan from 'morgan';
 const app: Express = express();
 const port = process.env.PORT;
 
+app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
