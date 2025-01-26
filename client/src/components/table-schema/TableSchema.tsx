@@ -1,21 +1,48 @@
 import React from 'react';
 import { AttributeForm } from '../attribute-form';
 import style from './TableSchema.module.css';
-import { useAppDispatch } from '../../redux/hooks';
-import { setTableName } from '../../redux/slices/tableSchemaSlice';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import {
+  setTableName,
+  selectAttributeList,
+  selectTableName,
+} from '../../redux/slices/tableSchemaSlice';
 import { AttributeList } from '../attribute-list';
+import { useCreateTableInfoMutation } from '../../redux/tableSchemaApi';
 
-export const TableSchema = () => {
+type Props = {
+  handleCancelClick: React.MouseEventHandler<HTMLButtonElement>;
+};
+
+export const TableSchema = (props: Props) => {
+  const { handleCancelClick } = props;
+
   const [tableValue, setTableValue] = React.useState<string>('');
   const dispatch = useAppDispatch();
+  const attributeListSelector = useAppSelector(selectAttributeList);
+  const tableNameSelector = useAppSelector(selectTableName);
+
+  const [createTableInfo] = useCreateTableInfoMutation();
 
   const handleBlur: React.FocusEventHandler<HTMLInputElement> = () => {
     const tableName = tableValue.trim();
-    if (tableName.trim() == '') {
+    if (tableName.trim() === '') {
       dispatch(setTableName(''));
     } else {
       dispatch(setTableName(tableName));
     }
+  };
+
+  const handleConfirm: React.MouseEventHandler<
+    HTMLButtonElement
+  > = async () => {
+    await createTableInfo({
+      name: tableNameSelector,
+      attributeList: attributeListSelector,
+    })
+      .unwrap()
+      .then((payload) => console.log(payload))
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -37,6 +64,15 @@ export const TableSchema = () => {
           <AttributeList />
         </div>
       </div>
+      <span className={style.buttonGroup}>
+        <button
+          onClick={handleConfirm}
+          disabled={attributeListSelector.length === 0 || !tableNameSelector}
+        >
+          OK
+        </button>
+        <button onClick={handleCancelClick}>Отмена</button>
+      </span>
     </div>
   );
 };
