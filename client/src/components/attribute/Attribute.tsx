@@ -1,4 +1,7 @@
+import { useAppDispatch } from '../../redux/hooks';
 import style from './Attribute.module.css';
+import { MdClear } from 'react-icons/md';
+import { removeAttributeFromList } from '../../redux/slices/tableSchemaSlice';
 
 type AttributeProps = {
   attribute: {
@@ -8,11 +11,18 @@ type AttributeProps = {
 };
 
 export const Attribute = (props: AttributeProps) => {
-  const { name, isPrimaryKey } = props.attribute;
+  const { attribute } = props;
+  const dispatch = useAppDispatch();
+
+  const handleClick = (name: string) => {
+    dispatch(removeAttributeFromList(name));
+  };
+
   return (
     <li className={style.attribute}>
-      <h5>{name}</h5>
-      {isPrimaryKey && <p>первичный ключ</p>}
+      <MdClear onClick={() => handleClick(attribute.name)} />
+      <h5>{attribute.name}</h5>
+      {attribute.isPrimaryKey && <p>(ПК)</p>}
     </li>
   );
 };
