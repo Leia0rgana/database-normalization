@@ -16,3 +16,9 @@ export type FunctionalDependency = {
   determinant: string[];
   dependent: string[];
 };
+
+export type TableSchema = {
+  name: string;
+  attributeList: Array<Attribute>;
+  functionalDependencies?: Array<FunctionalDependency>;
+};
