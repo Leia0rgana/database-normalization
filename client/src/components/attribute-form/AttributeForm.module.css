@@ -1,24 +1,76 @@
 .formContainer {
   display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: flex-end;
-  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
 }
 
 .attributeForm {
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .formGroup {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
+}
+
+.formGroup label {
+  color: #4a5568;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+}
+
+.formGroup input[type='text'] {
+  padding: 8px 12px;
+  border: 1px solid #e0e6f0;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  outline: none;
+  min-width: 200px;
+}
+
+.formGroup input[type='text']:focus {
+  border-color: #6daffa;
+  box-shadow: 0 0 0 2px rgba(109, 175, 250, 0.25);
 }
 
 .formButton {
-  width: fit-content;
-  padding: 5px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  background-color: #6daffa;
+  color: white;
+  align-self: flex-end;
+}
+
+.formButton:disabled {
+  background-color: #b3d3fb;
+  cursor: not-allowed;
+}
+
+.formButton:hover:not(:disabled) {
+  background-color: #5a9ae5;
+}
+
+.primaryKeyIcon {
+  font-size: 1.2em;
+  color: #ffd700;
+  cursor: help;
+}
+
+.foreignKeyIcon {
+  font-size: 1.2em;
+  color: #888;
+  cursor: help;
 }

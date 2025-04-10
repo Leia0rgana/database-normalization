@@ -15,7 +15,7 @@ export const AttributeList = () => {
           ))}
         </ul>
       ) : (
-        <div>Список атрибутов пуст</div>
+        <div className="italic text-xs">Список атрибутов пуст</div>
       )}
     </>
   );

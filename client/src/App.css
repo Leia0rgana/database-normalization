@@ -2,3 +2,12 @@
   max-width: 1280px;
   margin: 0 auto;
 }
+
+.addButton {
+  background-color: #f3f4f6;
+  color: #4a5568;
+  border: 1px solid #e0e6f0;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}

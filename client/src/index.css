@@ -1,3 +1,15 @@
+@import 'tailwindcss';
+
 * {
   margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 400;
+}
+
+button {
+  all: revert;
+}
+
+button:hover {
+  cursor: pointer;
 }

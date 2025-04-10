@@ -4,3 +4,26 @@
   gap: 5px;
   align-items: center;
 }
+
+.clearIcon {
+  cursor: pointer;
+  color: #888;
+}
+
+.clearIcon:hover {
+  color: #333;
+}
+
+.foreignKey {
+  font-size: 1.1em;
+  color: #888;
+  margin-left: 4px;
+  cursor: help;
+}
+
+.primaryKey {
+  font-size: 1.1em;
+  color: #ffd700;
+  margin-left: 4px;
+  cursor: help;
+}
