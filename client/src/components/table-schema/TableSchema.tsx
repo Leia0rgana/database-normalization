@@ -4,6 +4,7 @@ import style from './TableSchema.module.css';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
   setTableName,
+  clearSchema,
   selectAttributeList,
   selectTableName,
 } from '../../redux/slices/tableSchemaSlice';
@@ -41,23 +42,29 @@ export const TableSchema = (props: Props) => {
       attributeList: attributeListSelector,
     })
       .unwrap()
-      .then((payload) => console.log(payload))
+      .then(() => {
+        setTableValue('');
+        dispatch(clearSchema());
+      })
       .catch((error) => console.log(error));
   };
 
   return (
     <div className={style.tableSchemaContainer}>
       <span className={style.tableGroup}>
-        <label htmlFor="tableName">Таблица</label>
+        <label htmlFor="tableName" className="font-medium!">
+          Таблица
+        </label>
         <input
           type="text"
           name="tableName"
           value={tableValue}
           onChange={(e) => setTableValue(e.target.value)}
           onBlur={handleBlur}
+          className="border p-1"
         />
       </span>
-      <div>
+      <div className="font-medium!">
         Атрибуты
         <div className={style.attributeContainer}>
           <AttributeForm />

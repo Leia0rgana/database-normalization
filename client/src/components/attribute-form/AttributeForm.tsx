@@ -3,17 +3,19 @@ import style from './AttributeForm.module.css';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
   selectAttributeList,
-  setAttributeList,
+  addAttributeToTable,
 } from '../../redux/slices/tableSchemaSlice';
-// import { Dropdown } from '../UI/dropdown';
-
-// type AttributeFormProps = {
-//   setIsFormShown: (item: boolean) => void;
-// };
+import { TableDropdown } from '../table-dropdown';
+import { ForeignKeyReference } from '../../utils/types';
+import { VscKey } from 'react-icons/vsc';
 
 export const AttributeForm = () => {
   const [name, setName] = React.useState<string>('');
   const [isPrimaryKey, setIsPrimaryKey] = React.useState<boolean>(false);
+  const [foreignKeyReference, setForeignKeyReference] = React.useState<
+    ForeignKeyReference | undefined
+  >();
+
   const dispatch = useAppDispatch();
   const attributeListSelector = useAppSelector(selectAttributeList);
 
@@ -32,9 +34,10 @@ export const AttributeForm = () => {
 
     if (isUnique) {
       dispatch(
-        setAttributeList({
+        addAttributeToTable({
           name: name,
           isPrimaryKey,
+          foreignKeyReference: foreignKeyReference,
         })
       );
     } else {
@@ -55,24 +58,33 @@ export const AttributeForm = () => {
             name="name"
             value={name}
             onChange={handleNameChange}
-            className=""
+            className="border p-1"
           />
         </span>
         <span className={style.formGroup}>
-          <label htmlFor="isPrimaryKey">ПК</label>
+          <label htmlFor="isPrimaryKey">
+            <VscKey className={style.primaryKeyIcon} title="Первичный ключ" />
+          </label>
           <input
             type="checkbox"
             name="isPrimaryKey"
             checked={isPrimaryKey}
             onChange={handleCheckbox}
+            className="h-5"
           />
         </span>
         <span className={style.formGroup}>
-          <label htmlFor="type">ВК</label>
-          {/* <Dropdown list={list} /> */}
+          <label htmlFor="type">
+            <VscKey className={style.foreignKeyIcon} title="Внешний ключ" />
+          </label>
+          <TableDropdown setForeignKeyReference={setForeignKeyReference} />
         </span>
       </form>
-      <button className={style.formButton} onClick={handleAdd} disabled={!name}>
+      <button
+        className={`${style.formButton}`}
+        onClick={handleAdd}
+        disabled={!name}
+      >
         Добавить
       </button>
     </div>

@@ -1,26 +1,27 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Attribute, FunctionalDependency } from '../utils/types';
-
-type Request = {
-  name: string;
-  attributeList: Array<Attribute>;
-  functionalDependencies?: Array<FunctionalDependency>;
-};
+import { TableSchema } from '../utils/types';
 
 export const tableSchemaApi = createApi({
   reducerPath: 'tableSchemaApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:5000/',
   }),
+  tagTypes: ['TableInfo'],
   endpoints: (builder) => ({
-    createTableInfo: builder.mutation<void, Request>({
+    getTableInfos: builder.query<TableSchema[], void>({
+      query: () => '',
+      providesTags: ['TableInfo'],
+    }),
+    createTableInfo: builder.mutation<void, TableSchema>({
       query: (body) => ({
         url: '',
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['TableInfo'],
     }),
   }),
 });
 
-export const { useCreateTableInfoMutation } = tableSchemaApi;
+export const { useGetTableInfosQuery, useCreateTableInfoMutation } =
+  tableSchemaApi;
