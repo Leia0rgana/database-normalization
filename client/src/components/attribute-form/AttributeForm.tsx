@@ -15,6 +15,7 @@ export const AttributeForm = () => {
   const [foreignKeyReference, setForeignKeyReference] = React.useState<
     ForeignKeyReference | undefined
   >();
+  const [dropdownLabel, setDropdownLabel] = React.useState<string>('---');
 
   const dispatch = useAppDispatch();
   const attributeListSelector = useAppSelector(selectAttributeList);
@@ -46,6 +47,8 @@ export const AttributeForm = () => {
 
     setName('');
     setIsPrimaryKey(false);
+    setDropdownLabel('---');
+    setForeignKeyReference(undefined);
   };
 
   return (
@@ -77,7 +80,11 @@ export const AttributeForm = () => {
           <label htmlFor="type">
             <VscKey className={style.foreignKeyIcon} title="Внешний ключ" />
           </label>
-          <TableDropdown setForeignKeyReference={setForeignKeyReference} />
+          <TableDropdown
+            label={dropdownLabel}
+            onSetLabel={setDropdownLabel}
+            onSetForeignKey={setForeignKeyReference}
+          />
         </span>
       </form>
       <button

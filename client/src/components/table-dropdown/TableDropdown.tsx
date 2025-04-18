@@ -5,14 +5,15 @@ import { useClickOutside } from '../../hooks/useClickOutside';
 import { ForeignKeyReference } from '../../utils/types';
 
 type TableDropdownProps = {
-  setForeignKeyReference: (item: ForeignKeyReference | undefined) => void;
+  label: string;
+  onSetLabel: (label: string) => void;
+  onSetForeignKey: (item: ForeignKeyReference | undefined) => void;
 };
 
 export const TableDropdown = (props: TableDropdownProps) => {
-  const { setForeignKeyReference } = props;
+  const { label, onSetLabel, onSetForeignKey } = props;
 
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const [label, setLabel] = React.useState<string>('---');
   const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   const closeDropdown = React.useCallback(() => setIsOpen(false), []);
@@ -20,11 +21,11 @@ export const TableDropdown = (props: TableDropdownProps) => {
 
   const handleSelect = (item: { tableName: string; attributeName: string }) => {
     if (label === item.attributeName || item.attributeName === '---') {
-      setLabel('---');
-      setForeignKeyReference(undefined);
+      onSetLabel('---');
+      onSetForeignKey(undefined);
     } else {
-      setLabel(`${item.attributeName} (${item.tableName})`);
-      setForeignKeyReference(item);
+      onSetLabel(`${item.attributeName} (${item.tableName})`);
+      onSetForeignKey(item);
     }
     setIsOpen(false);
   };
