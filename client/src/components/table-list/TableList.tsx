@@ -1,3 +1,4 @@
+import React from 'react';
 import style from './TableList.module.css';
 import { useGetTableInfosQuery } from '../../redux/tableSchemaApi';
 import { TableInList } from '../table-in-list';
@@ -10,6 +11,9 @@ type TableListProps = {
 export const TableList = (props: TableListProps) => {
   const { isDropdown, onSelectItem } = props;
   const { data = [], isLoading, isError } = useGetTableInfosQuery();
+  const [openedTableName, setOpenedTableName] = React.useState<string | null>(
+    null
+  );
 
   if (isError) return <div>An error has occurred!</div>;
   if (isLoading) return <div>Loading...</div>;
@@ -20,7 +24,6 @@ export const TableList = (props: TableListProps) => {
         <li
           className={style.dropdownListItem}
           onClick={() => {
-            console.log('TABLE LIST');
             if (onSelectItem)
               onSelectItem({ tableName: '', attributeName: '---' });
           }}
@@ -35,6 +38,10 @@ export const TableList = (props: TableListProps) => {
           className={`${isDropdown ? style.dropdownListItem : ''}`}
           isDropdown={isDropdown}
           onSelectItem={onSelectItem}
+          isOpen={openedTableName === item.name}
+          onToggleTable={(tableName) =>
+            setOpenedTableName(tableName === openedTableName ? null : tableName)
+          }
         />
       ))}
     </ul>
