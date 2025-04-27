@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './TableList.module.css';
-import { useGetTableInfosQuery } from '../../redux/tableSchemaApi';
+import { useGetTableInfosQuery } from '../../redux/api/tableSchemaEndpoints';
 import { TableInList } from '../table-in-list';
 
 type TableListProps = {
@@ -9,6 +9,7 @@ type TableListProps = {
 };
 
 export const TableList = (props: TableListProps) => {
+  // TODO universal component
   const { isDropdown, onSelectItem } = props;
   const { data = [], isLoading, isError } = useGetTableInfosQuery();
   const [openedTableName, setOpenedTableName] = React.useState<string | null>(

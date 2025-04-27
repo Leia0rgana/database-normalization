@@ -1,0 +1,17 @@
+.attributeSelector {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.attributeSelector select {
+  width: 100%;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.attributeSelector small {
+  color: #718096;
+  font-size: 12px;
+}

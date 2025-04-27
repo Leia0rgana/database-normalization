@@ -1,14 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { tableSchemaApi } from './tableSchemaApi';
 import tableSchemaReducer from './slices/tableSchemaSlice';
+import functionalDependenciesReducer from './slices/functionalDependenciesSlice';
+import { baseApi } from './api/baseApi';
 
 export const store = configureStore({
   reducer: {
+    [baseApi.reducerPath]: baseApi.reducer,
     tableSchema: tableSchemaReducer,
-    [tableSchemaApi.reducerPath]: tableSchemaApi.reducer,
+    functionalDependencies: functionalDependenciesReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(tableSchemaApi.middleware),
+    getDefaultMiddleware().concat(baseApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

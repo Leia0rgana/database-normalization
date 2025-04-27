@@ -9,14 +9,14 @@ import {
   selectTableName,
 } from '../../redux/slices/tableSchemaSlice';
 import { AttributeList } from '../attribute-list';
-import { useCreateTableInfoMutation } from '../../redux/tableSchemaApi';
+import { useCreateTableInfoMutation } from '../../redux/api/tableSchemaEndpoints';
 
 type Props = {
-  handleCancelClick: React.MouseEventHandler<HTMLButtonElement>;
+  onCancelClick: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 export const TableSchema = (props: Props) => {
-  const { handleCancelClick } = props;
+  const { onCancelClick } = props;
 
   const [tableValue, setTableValue] = React.useState<string>('');
   const dispatch = useAppDispatch();
@@ -78,7 +78,7 @@ export const TableSchema = (props: Props) => {
         >
           OK
         </button>
-        <button onClick={handleCancelClick}>Отмена</button>
+        <button onClick={onCancelClick}>Отмена</button>
       </span>
     </div>
   );

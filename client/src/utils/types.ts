@@ -1,6 +1,6 @@
 export type Attribute = {
   name: string;
-  isPrimaryKey: boolean;
+  isPrimaryKey?: boolean;
   foreignKeyReference?: ForeignKeyReference;
 };
 
@@ -13,12 +13,16 @@ export type ForeignKeyReference = {
 export type RelationshipType = '1-1' | '1-N' | 'N-M';
 
 export type FunctionalDependency = {
+  id: string;
   determinant: string[];
   dependent: string[];
+};
+
+export type FunctionalDependencyState = FunctionalDependency & {
+  tableName: string;
 };
 
 export type TableSchema = {
   name: string;
   attributeList: Array<Attribute>;
-  functionalDependencies?: Array<FunctionalDependency>;
 };

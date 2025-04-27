@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { ForeignKeyReference, FunctionalDependency } from '../../utils/types';
+import { ForeignKeyReference } from '../../utils/types';
 export interface AttributeState {
   name: string;
   isPrimaryKey: boolean;
@@ -11,13 +11,11 @@ export interface AttributeState {
 export interface TableSchemaState {
   tableName: string;
   attributeList: AttributeState[];
-  functionalDependencies?: FunctionalDependency[];
 }
 
 const initialState: TableSchemaState = {
   tableName: '',
   attributeList: [],
-  functionalDependencies: [],
 };
 
 export const tableSchemaSlice = createSlice({
