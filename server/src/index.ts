@@ -4,6 +4,7 @@ import cors from 'cors';
 import express, { Express, Request, Response } from 'express';
 import TableInfoModel from './models/tableInfo';
 import morgan from 'morgan';
+import { FunctionalDependencyState } from './types';
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -26,42 +27,58 @@ mongoose
   .then(() => console.log('Connected to database'))
   .catch(console.error);
 
-app.get('/', async (req: Request, res: Response) => {
+//get table list
+app.get('/tables', async (req: Request, res: Response) => {
   try {
     const tables = await TableInfoModel.find().exec();
     res.status(200).json(tables);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    console.log('error getting data from server');
+    console.error('Error getting tables:', error);
+    res.status(500).json({ error: 'Failed to fetch tables' });
   }
 });
 
-app.get('/:tableId', async (req: Request, res: Response) => {
+//add table
+app.post('/tables', async (req: Request, res: Response) => {
   try {
-    const tableId = req.params.tableId;
-    const table = await TableInfoModel.findById(tableId).exec();
-    res.status(200).json(table);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
-    console.error('error getting data from server');
-  }
-});
-
-app.post('/', async (req: Request, res: Response) => {
-  try {
-    const name = req.body.name;
-    const attributeList = req.body.attributeList;
-    const functionalDependencies = req.body.functionalDependencies;
+    const { name, attributeList } = req.body;
 
     const newTableInfo = await TableInfoModel.create({
-      name: name,
-      attributeList: attributeList,
-      functionalDependencies: functionalDependencies,
+      name,
+      attributeList,
     });
 
     res.status(201).json(newTableInfo);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    console.error('error posting data to server');
+    console.error('Error creating table:', error);
+    res.status(500).json({ error: 'Failed to create table' });
+  }
+});
+
+// add FDs to existing tables
+app.patch('/tables/dependencies', async (req: Request, res: Response) => {
+  try {
+    const dependencies: FunctionalDependencyState[] = req.body;
+
+    const updatePromises = dependencies.map((dependency) =>
+      TableInfoModel.findOneAndUpdate(
+        { name: dependency.tableName },
+        {
+          $push: {
+            functionalDependencies: {
+              determinant: dependency.determinant,
+              dependent: dependency.dependent,
+            },
+          },
+        },
+        { new: true } // возврат обновленного документа
+      )
+    );
+
+    const results = await Promise.all(updatePromises);
+    res.status(200).json(results);
+  } catch (error) {
+    console.error('Error adding FDs:', error);
+    res.status(500).json({ error: 'Failed to add FDs' });
   }
 });

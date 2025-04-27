@@ -16,3 +16,7 @@ export type FunctionalDependency = {
   determinant: string[];
   dependent: string[];
 };
+
+export type FunctionalDependencyState = FunctionalDependency & {
+  tableName: string;
+};
