@@ -20,3 +20,9 @@ export type FunctionalDependency = {
 export type FunctionalDependencyState = FunctionalDependency & {
   tableName: string;
 };
+
+export type TableInfo = {
+  name: string;
+  attributeList: Attribute[];
+  functionalDependencies: FunctionalDependency[];
+};
