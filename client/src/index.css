@@ -1,13 +1,8 @@
 @import 'tailwindcss';
 
 * {
-  margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-family: 'Wix Madefor Text', sans-serif;
-}
-
-button {
-  all: revert;
 }
 
 button:hover {
