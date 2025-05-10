@@ -24,7 +24,7 @@ export const DependenciesList = () => {
             {fd.dependent.map((attribute) => attribute).join(', ')}
           </span>
           <button
-            className="ml-auto px-3 py-1.5 bg-red-500 text-white border-none rounded cursor-pointer text-sm hover:bg-red-600"
+            className="ml-auto px-3 py-1.5 bg-red-400 text-white rounded text-sm transition-all duration-200 hover:bg-red-500"
             onClick={() => dispatch(removeFunctionalDependency(fd.id))}
           >
             Удалить

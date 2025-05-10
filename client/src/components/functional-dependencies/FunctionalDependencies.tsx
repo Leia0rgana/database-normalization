@@ -116,7 +116,7 @@ export const FunctionalDependencies = (props: Props) => {
               />
             </div>
             <button
-              className="px-4 py-2.5 bg-blue-500 text-white border-none rounded cursor-pointer font-medium self-start disabled:bg-gray-300 disabled:cursor-not-allowed hover:enabled:bg-blue-600"
+              className="self-start px-4 py-2.5 bg-blue-400 text-white rounded font-medium transition-all duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed hover:enabled:bg-blue-500"
               onClick={handleAddDependency}
               disabled={
                 !selectedDeterminant.length || !selectedDependent.length
@@ -132,7 +132,7 @@ export const FunctionalDependencies = (props: Props) => {
         <button
           onClick={handleConfirm}
           disabled={dependenciesSelector.length === 0}
-          className="px-4 py-2 rounded font-medium cursor-pointer transition-all duration-200 border-none bg-blue-400 text-white disabled:bg-blue-200 disabled:cursor-not-allowed hover:enabled:bg-blue-500"
+          className="px-4 py-2 rounded font-medium transition-all duration-200 border-none bg-blue-400 text-white disabled:bg-blue-200 disabled:cursor-not-allowed hover:enabled:bg-blue-500"
         >
           OK
         </button>

@@ -62,7 +62,7 @@ export const AttributeForm = () => {
             name="name"
             value={name}
             onChange={handleNameChange}
-            className="px-3 py-2 border border-gray-200 rounded transition-all duration-200 min-w-[200px]"
+            className="px-3 py-2 border bg-white border-gray-200 rounded transition-all duration-200 min-w-[200px]"
           />
         </span>
         <span className="flex flex-col gap-2">

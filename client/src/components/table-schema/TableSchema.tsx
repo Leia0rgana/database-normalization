@@ -49,7 +49,7 @@ export const TableSchema = (props: Props) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 items-start w-fit p-6 my-4 rounded-lg bg-white shadow-lg border border-gray-200">
+    <div className="flex flex-col gap-4 items-start w-fit p-6 my-4 rounded-lg shadow-lg border border-gray-300">
       <span className="flex flex-col gap-2">
         <label htmlFor="tableName" className="font-medium">
           Таблица
@@ -60,12 +60,12 @@ export const TableSchema = (props: Props) => {
           value={tableValue}
           onChange={(e) => setTableValue(e.target.value)}
           onBlur={handleBlur}
-          className="px-3 py-2 border border-gray-200 rounded transition-all duration-200"
+          className="px-3 py-2 font-normal border border-gray-200 rounded transition-all duration-200"
         />
       </span>
       <div className="font-medium">
         Атрибуты
-        <div className="flex flex-col gap-3 border border-gray-200 rounded-lg p-4 my-2 w-full box-border ">
+        <div className="flex flex-col gap-3 font-normal bg-gray-50 border border-gray-200 rounded-lg p-4 my-2 w-full box-border ">
           <AttributeForm />
           <AttributeList />
         </div>
