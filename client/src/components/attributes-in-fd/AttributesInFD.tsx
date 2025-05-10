@@ -1,5 +1,4 @@
 import React from 'react';
-import style from './AttributesInFD.module.css';
 import { Attribute } from '../../utils/types';
 
 type AttributesInFDProps = {
@@ -26,13 +25,14 @@ export const AttributesInFD = (props: AttributesInFDProps) => {
   };
 
   return (
-    <div className={style.attributeSelector}>
+    <div className="flex flex-col gap-1.5">
       <label>{label}</label>
       <select
         multiple
         size={3}
         value={selectedAttributes.map((attribute) => attribute.name)}
         onChange={handleChange}
+        className="w-full border border-gray-300 rounded bg-white"
       >
         {selectedTableAttributes.map((attribute) => (
           <option key={attribute.name} value={attribute.name} className="p-1">
@@ -40,7 +40,9 @@ export const AttributesInFD = (props: AttributesInFDProps) => {
           </option>
         ))}
       </select>
-      <small>Удерживайте Ctrl для выбора нескольких атрибутов</small>
+      <small className="text-gray-500 text-xs">
+        Удерживайте Ctrl для выбора нескольких атрибутов
+      </small>
     </div>
   );
 };

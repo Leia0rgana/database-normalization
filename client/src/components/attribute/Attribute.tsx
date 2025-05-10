@@ -1,5 +1,4 @@
 import { useAppDispatch } from '../../redux/hooks';
-import style from './Attribute.module.css';
 import { MdClear } from 'react-icons/md';
 import { VscKey } from 'react-icons/vsc';
 import { removeAttributeFromTable } from '../../redux/slices/tableSchemaSlice';
@@ -24,19 +23,22 @@ export const Attribute = (props: AttributeProps) => {
   };
 
   return (
-    <li className={style.attribute}>
+    <li className="flex flex-row gap-1.5 items-center">
       <MdClear
-        className={style.clearIcon}
+        className="cursor-pointer text-gray-500 hover:text-gray-700"
         onClick={() => handleClick(attribute.name)}
       />
       <h5>{attribute.name}</h5>
       {attribute.isPrimaryKey && (
-        <VscKey className={style.primaryKey} title="Первичный ключ" />
+        <VscKey
+          className="text-lg text-yellow-400 ml-1 cursor-help"
+          title="Первичный ключ"
+        />
       )}
       {attribute.foreignKeyReference && (
         <>
           <VscKey
-            className={style.foreignKey}
+            className="text-lg text-gray-500 ml-1 cursor-help"
             title={`Внешний ключ ${attribute.foreignKeyReference.attributeName} из таблицы ${attribute.foreignKeyReference.tableName}`}
           />
         </>

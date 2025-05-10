@@ -1,5 +1,4 @@
 import React from 'react';
-import style from './TableList.module.css';
 import { useGetTableInfosQuery } from '../../redux/api/tableSchemaEndpoints';
 import { TableInList } from '../table-in-list';
 
@@ -16,14 +15,23 @@ export const TableList = (props: TableListProps) => {
     null
   );
 
-  if (isError) return <div>An error has occurred!</div>;
-  if (isLoading) return <div>Loading...</div>;
+  const listItemStyles =
+    'relative flex gap-1.5 justify-between border-b-[1px] border-gray-200 p-1 text-[#252b35] cursor-pointer hover:bg-blue-400 hover:text-white hover:rounded';
+
+  if (isError) return <div>Невозможно загрузить данные</div>;
+  if (isLoading) return <div>Загрузка...</div>;
 
   return (
-    <ul className={`${isDropdown ? style.dropdownList : ''}`}>
+    <ul
+      className={
+        isDropdown
+          ? 'absolute z-100 top-full left-0 flex flex-col min-w-[200px] bg-white border border-gray-400 rounded'
+          : ''
+      }
+    >
       {isDropdown && (
         <li
-          className={style.dropdownListItem}
+          className={listItemStyles}
           onClick={() => {
             if (onSelectItem)
               onSelectItem({ tableName: '', attributeName: '---' });
@@ -36,7 +44,7 @@ export const TableList = (props: TableListProps) => {
         <TableInList
           key={item.name}
           tableInfo={item}
-          className={`${isDropdown ? style.dropdownListItem : ''}`}
+          className={isDropdown ? listItemStyles : ''}
           isDropdown={isDropdown}
           onSelectItem={onSelectItem}
           isOpen={openedTableName === item.name}

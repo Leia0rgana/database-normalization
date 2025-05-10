@@ -1,6 +1,5 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import style from './FunctionalDependencies.module.css';
 import {
   addFunctionalDependency,
   clearFunctionalDependencies,
@@ -78,16 +77,17 @@ export const FunctionalDependencies = (props: Props) => {
   };
 
   return (
-    <div className={style.functionalDependenciesContainer}>
+    <div className="p-5 max-w-3xl mx-auto border border-gray-200 rounded-lg bg-white shadow-sm">
       <h2>Функциональные зависимости</h2>
-      <div className={style.dependencyForm}>
-        <div className={style.tableSelector}>
+      <div className="flex flex-col gap-5 my-5 p-4 border border-gray-200 rounded bg-gray-50">
+        <div className="flex flex-col gap-2">
           <label htmlFor="tableSelect">Отношение:</label>
           <select
             id="tableSelect"
             value={selectedTable}
             onChange={(e) => setSelectedTable(e.target.value)}
             disabled={isLoading}
+            className="px-3 py-2 border border-gray-300 rounded bg-white"
           >
             <option value="">---</option>
             {tables.map((table) => (
@@ -107,7 +107,7 @@ export const FunctionalDependencies = (props: Props) => {
                 selectedAttributes={selectedDeterminant}
                 onChangeHandler={setSelectedDeterminant}
               />
-              <div className={style.dependencyArrow}>→</div>
+              <div className="text-2xl text-gray-600 text-center my-2.5">→</div>
               <AttributesInFD
                 label="Зависимые атрибуты:"
                 selectedTableAttributes={selectedTableAttributes}
@@ -116,7 +116,7 @@ export const FunctionalDependencies = (props: Props) => {
               />
             </div>
             <button
-              className={style.addButton}
+              className="px-4 py-2.5 bg-blue-500 text-white border-none rounded cursor-pointer font-medium self-start disabled:bg-gray-300 disabled:cursor-not-allowed hover:enabled:bg-blue-600"
               onClick={handleAddDependency}
               disabled={
                 !selectedDeterminant.length || !selectedDependent.length
@@ -128,14 +128,20 @@ export const FunctionalDependencies = (props: Props) => {
         )}
       </div>
       {dependenciesSelector.length !== 0 && <DependenciesList />}
-      <span className={style.buttonGroup}>
+      <span className="flex self-end gap-3">
         <button
           onClick={handleConfirm}
           disabled={dependenciesSelector.length === 0}
+          className="px-4 py-2 rounded font-medium cursor-pointer transition-all duration-200 border-none bg-blue-400 text-white disabled:bg-blue-200 disabled:cursor-not-allowed hover:enabled:bg-blue-500"
         >
           OK
         </button>
-        <button onClick={onCancelClick}>Отмена</button>
+        <button
+          onClick={onCancelClick}
+          className="px-4 py-2 rounded font-medium cursor-pointer transition-all duration-200 bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200"
+        >
+          Отмена
+        </button>
       </span>
     </div>
   );

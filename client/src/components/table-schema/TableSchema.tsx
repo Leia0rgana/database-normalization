@@ -1,6 +1,5 @@
 import React from 'react';
 import { AttributeForm } from '../attribute-form';
-import style from './TableSchema.module.css';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
   setTableName,
@@ -50,9 +49,9 @@ export const TableSchema = (props: Props) => {
   };
 
   return (
-    <div className={style.tableSchemaContainer}>
-      <span className={style.tableGroup}>
-        <label htmlFor="tableName" className="font-medium!">
+    <div className="flex flex-col gap-4 items-start w-fit p-6 my-4 rounded-lg bg-white shadow-lg border border-gray-200">
+      <span className="flex flex-col gap-2">
+        <label htmlFor="tableName" className="font-medium">
           Таблица
         </label>
         <input
@@ -61,24 +60,30 @@ export const TableSchema = (props: Props) => {
           value={tableValue}
           onChange={(e) => setTableValue(e.target.value)}
           onBlur={handleBlur}
-          className="border p-1"
+          className="px-3 py-2 border border-gray-200 rounded transition-all duration-200"
         />
       </span>
-      <div className="font-medium!">
+      <div className="font-medium">
         Атрибуты
-        <div className={style.attributeContainer}>
+        <div className="flex flex-col gap-3 border border-gray-200 rounded-lg p-4 my-2 w-full box-border ">
           <AttributeForm />
           <AttributeList />
         </div>
       </div>
-      <span className={style.buttonGroup}>
+      <span className="flex self-end gap-3">
         <button
           onClick={handleConfirm}
           disabled={attributeListSelector.length === 0 || !tableNameSelector}
+          className="px-4 py-2 rounded font-medium cursor-pointer transition-all duration-200 border-none bg-blue-400 text-white disabled:bg-blue-200 disabled:cursor-not-allowed hover:enabled:bg-blue-500"
         >
           OK
         </button>
-        <button onClick={onCancelClick}>Отмена</button>
+        <button
+          onClick={onCancelClick}
+          className="px-4 py-2 rounded font-medium cursor-pointer transition-all duration-200 bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200"
+        >
+          Отмена
+        </button>
       </span>
     </div>
   );

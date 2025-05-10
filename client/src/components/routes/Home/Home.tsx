@@ -2,10 +2,10 @@ export const Home = () => {
   return (
     <div className="flex justify-around items-center mt-10">
       <div className="flex flex-col items-start gap-4 py-5 ">
-        <h1 className="font-medium text-3xl">
+        <h1 className="font-medium text-3xl text-[#252b35]">
           Приведите свою базу данных в порядок
         </h1>
-        <p className="">
+        <p className="text-[#252b35]">
           DBNormilizer поможет легко нормализовать структуру базы данных
           <br />и обеспечить целостность данных без сложных теорий
         </p>

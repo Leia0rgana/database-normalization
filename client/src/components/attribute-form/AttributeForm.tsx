@@ -1,5 +1,4 @@
 import React from 'react';
-import style from './AttributeForm.module.css';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
   selectAttributeList,
@@ -52,33 +51,41 @@ export const AttributeForm = () => {
   };
 
   return (
-    <div className={style.formContainer}>
-      <form className={style.attributeForm}>
-        <span className={style.formGroup}>
-          <label htmlFor="name">Имя</label>
+    <div className="flex flex-col gap-4 items-center w-full">
+      <form className="flex flex-row items-start gap-3 flex-wrap w-full">
+        <span className="flex flex-col gap-2">
+          <label htmlFor="name" className="flex items-center text-sm">
+            Имя
+          </label>
           <input
             type="text"
             name="name"
             value={name}
             onChange={handleNameChange}
-            className="border p-1"
+            className="px-3 py-2 border border-gray-200 rounded transition-all duration-200 min-w-[200px]"
           />
         </span>
-        <span className={style.formGroup}>
+        <span className="flex flex-col gap-2">
           <label htmlFor="isPrimaryKey">
-            <VscKey className={style.primaryKeyIcon} title="Первичный ключ" />
+            <VscKey
+              className="text-xl text-yellow-400 cursor-help"
+              title="Первичный ключ"
+            />
           </label>
           <input
             type="checkbox"
             name="isPrimaryKey"
             checked={isPrimaryKey}
             onChange={handleCheckbox}
-            className="h-5"
+            className="h-10 cursor-pointer"
           />
         </span>
-        <span className={style.formGroup}>
-          <label htmlFor="type">
-            <VscKey className={style.foreignKeyIcon} title="Внешний ключ" />
+        <span className="flex flex-col gap-2">
+          <label htmlFor="foreignKey">
+            <VscKey
+              className="text-xl text-gray-500 cursor-help"
+              title="Внешний ключ"
+            />
           </label>
           <TableDropdown
             label={dropdownLabel}
@@ -88,7 +95,7 @@ export const AttributeForm = () => {
         </span>
       </form>
       <button
-        className={`${style.formButton}`}
+        className="self-end px-4 py-2 rounded font-medium transition-all duration-200 bg-blue-400 text-white disabled:bg-blue-200 disabled:cursor-not-allowed hover:enabled:bg-blue-500"
         onClick={handleAdd}
         disabled={!name}
       >

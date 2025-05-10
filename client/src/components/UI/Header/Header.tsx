@@ -2,7 +2,7 @@ import { NavLink } from 'react-router';
 
 export const Header = () => {
   return (
-    <div className="flex justify-between border-b-[1px] border-[#E5E8EB] py-5">
+    <div className="flex justify-between border-b-[1px] border-[#E5E8EB] text-[#252b35] py-5">
       <NavLink to="/" className="flex items-center gap-1 font-bold text-xl p-2">
         <img src="favicon.svg" alt="logo" decoding="async" width="20px" />
         DBNormalizer
