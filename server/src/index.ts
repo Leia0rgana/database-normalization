@@ -1,11 +1,12 @@
 import express, { Express } from 'express';
 import cors from 'cors';
 import 'dotenv/config';
-import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import { authRouter } from './routes/auth';
 import { tableInfoRouter } from './routes/tableInfo';
+import { connectToDB } from './config/mongodb';
+import { userRouter } from './routes/user';
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -24,10 +25,8 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-mongoose
-  .connect(process.env.CONNECTION_STRING || '')
-  .then(() => console.log('Connected to database'))
-  .catch(console.error);
+connectToDB();
 
 app.use('/auth', authRouter);
-app.use('/', tableInfoRouter);
+app.use('/tables', tableInfoRouter);
+app.use('/user', userRouter);

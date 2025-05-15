@@ -7,6 +7,6 @@ import {
 
 export const tableInfoRouter = express.Router();
 
-tableInfoRouter.get('/tables', getTableList);
-tableInfoRouter.post('/tables', addTable);
-tableInfoRouter.patch('/tables/dependencies', addDependenciesToTables);
+tableInfoRouter.get('/', getTableList);
+tableInfoRouter.post('/', addTable);
+tableInfoRouter.patch('/dependencies', addDependenciesToTables);
