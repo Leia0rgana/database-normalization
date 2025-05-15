@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import TableInfoModel from '../models/tableInfo';
-import { FunctionalDependencyState } from '../types';
+import { FunctionalDependencyState } from '../utils/types';
 
 //get table list
 export const getTableList = async (req: Request, res: Response) => {

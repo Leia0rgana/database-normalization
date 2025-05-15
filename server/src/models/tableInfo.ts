@@ -1,5 +1,5 @@
 import { InferSchemaType, Schema, model } from 'mongoose';
-import { Attribute, FunctionalDependency } from '../types';
+import { Attribute, FunctionalDependency } from '../utils/types';
 
 const tableInfo = new Schema({
   name: { type: String, require },

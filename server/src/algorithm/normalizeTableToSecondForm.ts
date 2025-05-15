@@ -1,5 +1,5 @@
 import tableInfo from '../models/tableInfo';
-import { TableInfo, FunctionalDependency } from '../types';
+import { TableInfo, FunctionalDependency } from '../utils/types';
 
 export const normalizeTo2NF = async (
   originalTable: TableInfo
