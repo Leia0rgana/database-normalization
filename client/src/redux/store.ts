@@ -1,16 +1,26 @@
 import { configureStore } from '@reduxjs/toolkit';
 import tableSchemaReducer from './slices/tableSchemaSlice';
 import functionalDependenciesReducer from './slices/functionalDependenciesSlice';
-import { baseApi } from './api/baseApi';
+import userReducer from './slices/userSlice';
+import { tableSchemaApi } from './api/tableSchemaApi';
+import { functionalDependenciesApi } from './api/functionalDependenciesApi';
+import { userApi } from './api/userApi';
 
 export const store = configureStore({
   reducer: {
-    [baseApi.reducerPath]: baseApi.reducer,
+    [tableSchemaApi.reducerPath]: tableSchemaApi.reducer,
+    [functionalDependenciesApi.reducerPath]: functionalDependenciesApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
     tableSchema: tableSchemaReducer,
     functionalDependencies: functionalDependenciesReducer,
+    user: userReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(baseApi.middleware),
+    getDefaultMiddleware().concat(
+      tableSchemaApi.middleware,
+      functionalDependenciesApi.middleware,
+      userApi.middleware
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

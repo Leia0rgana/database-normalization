@@ -8,7 +8,7 @@ import {
   selectTableName,
 } from '../../redux/slices/tableSchemaSlice';
 import { AttributeList } from '../attribute-list';
-import { useCreateTableInfoMutation } from '../../redux/api/tableSchemaEndpoints';
+import { useCreateTableInfoMutation } from '../../redux/api/tableSchemaApi';
 
 type Props = {
   onCancelClick: React.MouseEventHandler<HTMLButtonElement>;
@@ -74,14 +74,11 @@ export const TableSchema = (props: Props) => {
         <button
           onClick={handleConfirm}
           disabled={attributeListSelector.length === 0 || !tableNameSelector}
-          className="px-4 py-2 rounded font-medium cursor-pointer transition-all duration-200 border-none bg-blue-400 text-white disabled:bg-blue-200 disabled:cursor-not-allowed hover:enabled:bg-blue-500"
+          className="btn-primary"
         >
           OK
         </button>
-        <button
-          onClick={onCancelClick}
-          className="px-4 py-2 rounded font-medium cursor-pointer transition-all duration-200 bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200"
-        >
+        <button onClick={onCancelClick} className="btn-secondary">
           Отмена
         </button>
       </span>

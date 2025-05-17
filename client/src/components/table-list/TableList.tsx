@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGetTableInfosQuery } from '../../redux/api/tableSchemaEndpoints';
+import { useGetTableInfosQuery } from '../../redux/api/tableSchemaApi';
 import { TableInList } from '../table-in-list';
 
 type TableListProps = {
@@ -10,16 +10,19 @@ type TableListProps = {
 export const TableList = (props: TableListProps) => {
   // TODO universal component
   const { isDropdown, onSelectItem } = props;
-  const { data = [], isLoading, isError } = useGetTableInfosQuery();
+  const { data = [], isLoading, isError, error } = useGetTableInfosQuery();
   const [openedTableName, setOpenedTableName] = React.useState<string | null>(
     null
   );
 
   const listItemStyles =
-    'relative flex gap-1.5 justify-between border-b-[1px] border-gray-200 p-1 text-[#252b35] cursor-pointer hover:bg-blue-400 hover:text-white hover:rounded';
+    'relative flex gap-1.5 justify-between border-b-[1px] border-gray-200 p-1 text-[#252b35] hover:bg-blue-400 hover:text-white hover:rounded';
 
-  if (isError) return <div>Невозможно загрузить данные</div>;
   if (isLoading) return <div>Загрузка...</div>;
+  if (isError) {
+    if ('status' in error) console.error(error.status);
+    return <span>Ошибка при загрузке данных</span>;
+  }
 
   return (
     <ul

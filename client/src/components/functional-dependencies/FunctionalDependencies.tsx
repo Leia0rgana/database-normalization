@@ -6,8 +6,8 @@ import {
   selectFunctionalDependencies,
   type FunctionalDependency,
 } from '../../redux/slices/functionalDependenciesSlice';
-import { useGetTableInfosQuery } from '../../redux/api/tableSchemaEndpoints';
-import { useAddFunctionalDependenciesMutation } from '../../redux/api/functionalDependenciesEndpoints';
+import { useGetTableInfosQuery } from '../../redux/api/tableSchemaApi';
+import { useAddFunctionalDependenciesMutation } from '../../redux/api/functionalDependenciesApi';
 import { AttributesInFD } from '../attributes-in-fd';
 import { Attribute } from '../../utils/types';
 import { DependenciesList } from '../dependencies-list';
@@ -116,7 +116,7 @@ export const FunctionalDependencies = (props: Props) => {
               />
             </div>
             <button
-              className="self-start px-4 py-2.5 bg-blue-400 text-white rounded font-medium transition-all duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed hover:enabled:bg-blue-500"
+              className="btn-primary self-start"
               onClick={handleAddDependency}
               disabled={
                 !selectedDeterminant.length || !selectedDependent.length
@@ -132,14 +132,11 @@ export const FunctionalDependencies = (props: Props) => {
         <button
           onClick={handleConfirm}
           disabled={dependenciesSelector.length === 0}
-          className="px-4 py-2 rounded font-medium transition-all duration-200 border-none bg-blue-400 text-white disabled:bg-blue-200 disabled:cursor-not-allowed hover:enabled:bg-blue-500"
+          className="btn-primary"
         >
           OK
         </button>
-        <button
-          onClick={onCancelClick}
-          className="px-4 py-2 rounded font-medium cursor-pointer transition-all duration-200 bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200"
-        >
+        <button onClick={onCancelClick} className="btn-secondary">
           Отмена
         </button>
       </span>

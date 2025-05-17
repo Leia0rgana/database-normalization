@@ -1,7 +1,11 @@
-import { baseApi } from './baseApi';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { FunctionalDependency } from '../../utils/types';
 
-export const functionalDependenciesApi = baseApi.injectEndpoints({
+export const functionalDependenciesApi = createApi({
+  reducerPath: 'functionalDependenciesApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl: import.meta.env.VITE_BASE_URL,
+  }),
   endpoints: (builder) => ({
     addFunctionalDependencies: builder.mutation<void, FunctionalDependency[]>({
       query: (body) => ({
