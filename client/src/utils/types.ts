@@ -26,3 +26,18 @@ export type TableSchema = {
   name: string;
   attributeList: Array<Attribute>;
 };
+
+export type User = {
+  name?: string;
+  email: string;
+  password: string;
+};
+
+export type UserData = {
+  name: string;
+  isAccountVerified?: boolean;
+};
+
+export type Response = {
+  success: boolean;
+};
