@@ -25,7 +25,7 @@ export const Attribute = (props: AttributeProps) => {
   return (
     <li className="flex flex-row gap-1.5 items-center">
       <MdClear
-        className="cursor-pointer text-gray-500 hover:text-gray-700"
+        className=" text-gray-500 hover:text-gray-700"
         onClick={() => handleClick(attribute.name)}
       />
       <h5>{attribute.name}</h5>

@@ -77,7 +77,7 @@ export const AttributeForm = () => {
             name="isPrimaryKey"
             checked={isPrimaryKey}
             onChange={handleCheckbox}
-            className="h-10 cursor-pointer"
+            className="h-10"
           />
         </span>
         <span className="flex flex-col gap-2">
@@ -95,7 +95,7 @@ export const AttributeForm = () => {
         </span>
       </form>
       <button
-        className="self-end px-4 py-2 rounded font-medium transition-all duration-200 bg-blue-400 text-white disabled:bg-blue-200 disabled:cursor-not-allowed hover:enabled:bg-blue-500"
+        className="btn-primary self-end"
         onClick={handleAdd}
         disabled={!name}
       >

@@ -12,6 +12,47 @@
   outline-offset: 2px;
 }
 
-button:hover {
+button:not(:disabled):hover {
   cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+@layer components {
+  .btn-primary {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+    background: #51a2ff;
+    color: #fff;
+    transition-property: background-color;
+    transition-duration: 200ms;
+  }
+  .btn-primary:hover:enabled {
+    background: #2b7fff;
+  }
+  .btn-primary:disabled {
+    background: #bedbff;
+  }
+
+  .btn-secondary {
+    padding: 8px 16px;
+    border: 1px solid #ebe6e7;
+    border-radius: 4px;
+    font-weight: 500;
+    background: #f6f3f4;
+    color: #4a5565;
+    transition-property: background-color;
+    transition-duration: 200ms;
+  }
+
+  .btn-secondary:hover:enabled {
+    background: #ebe6e7;
+  }
+
+  .btn-primary:disabled {
+    background: #bedbff;
+  }
 }

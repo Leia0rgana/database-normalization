@@ -3,7 +3,6 @@ import './App.css';
 import { TableSchema } from './components/table-schema';
 import { useAppDispatch } from './redux/hooks';
 import { clearSchema } from './redux/slices/tableSchemaSlice';
-import { TableList } from './components/table-list';
 import { FunctionalDependencies } from './components/functional-dependencies';
 import { clearFunctionalDependencies } from './redux/slices/functionalDependenciesSlice';
 
@@ -27,6 +26,7 @@ function App() {
     dispatch(clearFunctionalDependencies());
     setIsDependenciesFormShown(false);
   };
+
   return (
     <div className="flex flex-col gap-8 p-8">
       <div className="flex justify-between items-start">
@@ -51,13 +51,9 @@ function App() {
           </button>
         </div>
       </div>
-
-      <div className="flex gap-8">
-        <TableList />
-        {isDependenciesFormShown && (
-          <FunctionalDependencies onCancelClick={handleDependenciesFormClose} />
-        )}
-      </div>
+      {isDependenciesFormShown && (
+        <FunctionalDependencies onCancelClick={handleDependenciesFormClose} />
+      )}
     </div>
   );
 }
