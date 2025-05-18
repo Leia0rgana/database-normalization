@@ -55,4 +55,20 @@ button:disabled {
   .btn-primary:disabled {
     background: #bedbff;
   }
+
+  .spinner {
+    animation: spinner 1s infinite linear;
+    width: 2.2em;
+    height: 2.2em;
+  }
+
+  @keyframes spinner {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
