@@ -5,7 +5,9 @@ export const tableSchemaApi = createApi({
   reducerPath: 'tableSchemaApi',
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
+    credentials: 'include',
   }),
+
   tagTypes: ['TableInfo'],
   endpoints: (builder) => ({
     getTableInfos: builder.query<TableSchema[], void>({

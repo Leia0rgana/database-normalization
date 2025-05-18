@@ -5,6 +5,7 @@ export const functionalDependenciesApi = createApi({
   reducerPath: 'functionalDependenciesApi',
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
+    credentials: 'include',
   }),
   endpoints: (builder) => ({
     addFunctionalDependencies: builder.mutation<void, FunctionalDependency[]>({
