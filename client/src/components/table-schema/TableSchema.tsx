@@ -9,6 +9,7 @@ import {
 } from '../../redux/slices/tableSchemaSlice';
 import { AttributeList } from '../attribute-list';
 import { useCreateTableInfoMutation } from '../../redux/api/tableSchemaApi';
+import { setError } from '../../redux/slices/errorSlice';
 
 type Props = {
   onCancelClick: React.MouseEventHandler<HTMLButtonElement>;
@@ -45,7 +46,9 @@ export const TableSchema = (props: Props) => {
         setTableValue('');
         dispatch(clearSchema());
       })
-      .catch((error) => console.log(error));
+      .catch(() => {
+        dispatch(setError('Не удалось добавить информацию о таблице'));
+      });
   };
 
   return (

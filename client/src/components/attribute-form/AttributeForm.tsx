@@ -7,6 +7,7 @@ import {
 import { TableDropdown } from '../table-dropdown';
 import { ForeignKeyReference } from '../../utils/types';
 import { VscKey } from 'react-icons/vsc';
+import { setError } from '../../redux/slices/errorSlice';
 
 export const AttributeForm = () => {
   const [name, setName] = React.useState<string>('');
@@ -41,7 +42,7 @@ export const AttributeForm = () => {
         })
       );
     } else {
-      console.log('element already exists'); // todo throw error
+      dispatch(setError('Атрибут с таким названием уже существует'));
     }
 
     setName('');
