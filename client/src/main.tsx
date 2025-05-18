@@ -8,27 +8,32 @@ import { PageNotFound } from './components/routes/PageNotFound';
 import { MainLayout } from './components/routes/MainLayout';
 import { Home } from './components/routes/Home';
 import { Login } from './components/routes/Login.tsx';
+import { ProtectedRoute } from './components/routes/ProtectedRoute.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    Component: MainLayout,
+    element: <MainLayout />,
     children: [
       {
         index: true,
-        Component: Home,
+        element: <Home />,
       },
       {
         path: '/login',
-        Component: Login,
+        element: <Login />,
       },
       {
         path: '/normalization',
-        Component: App,
+        element: (
+          <ProtectedRoute>
+            <App />{' '}
+          </ProtectedRoute>
+        ),
       },
       {
         path: '*',
-        Component: PageNotFound,
+        element: <PageNotFound />,
       },
     ],
   },
