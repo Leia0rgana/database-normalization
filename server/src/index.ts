@@ -11,7 +11,7 @@ import { userRouter } from './routes/user';
 const app: Express = express();
 const port = process.env.PORT;
 
-const allowedOrigins = ['http://localhost:5173'];
+const allowedOrigins = ['http://localhost:5173', 'http://185.221.155.203:5173'];
 
 app.use(express.json());
 app.use(cookieParser());
