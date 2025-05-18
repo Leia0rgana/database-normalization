@@ -1,4 +1,3 @@
-import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
@@ -24,21 +23,19 @@ const router = createBrowserRouter([
         Component: Login,
       },
       {
-        path: '/app',
+        path: '/normalization',
         Component: App,
       },
+      {
+        path: '*',
+        Component: PageNotFound,
+      },
     ],
-  },
-  {
-    path: '*',
-    Component: PageNotFound,
   },
 ]);
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </StrictMode>
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
 );

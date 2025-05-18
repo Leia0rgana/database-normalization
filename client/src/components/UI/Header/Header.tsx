@@ -30,7 +30,6 @@ export const Header = () => {
   const [logout] = useLogoutUserMutation();
 
   React.useEffect(() => {
-    console.log('deps');
     if (userDataResponse?.success) {
       dispatch(setUserData(userDataResponse.userData));
     }
@@ -61,7 +60,7 @@ export const Header = () => {
             <div className="absolute hidden group-hover:block top-0 right-0 z-10 text-black pt-10">
               <ul className="bg-gray-100  rounded-xl text-sm p-2">
                 <li className="py-1 px-2 hover:bg-gray-200  rounded-xl">
-                  <Link to="/app">Нормализация</Link>
+                  <Link to="/normalization">Нормализация</Link>
                 </li>
                 <li
                   className="py-1 px-2 hover:bg-gray-200 rounded-xl"
