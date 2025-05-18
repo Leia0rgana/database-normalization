@@ -8,9 +8,11 @@ export const getUserData = async (req: Request, res: Response) => {
     const user = await userModel.findById(userId);
 
     if (!user) {
-      return res.json({ success: false, message: 'User not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: 'User not found' });
     }
-    return res.json({
+    return res.status(200).json({
       success: true,
       userData: {
         name: user.name,
@@ -18,7 +20,7 @@ export const getUserData = async (req: Request, res: Response) => {
       },
     });
   } catch (error: any) {
-    // TODO TYPE ERROR
-    res.json({ success: false, message: error.message });
+    console.error('Error in getUserData:', error);
+    return res.status(500).json({ success: false, message: error.message });
   }
 };

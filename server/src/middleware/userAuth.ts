@@ -9,7 +9,7 @@ export const userAuth = async (
   const { token } = req.cookies;
 
   if (!token) {
-    return res.json({ success: false, message: 'Not authorized. Login again' });
+    return res.status(401).json({ success: false, message: 'Not authorized' });
   }
 
   try {
@@ -21,15 +21,15 @@ export const userAuth = async (
     ) {
       req.body.userId = tokenDecode.id;
     } else {
-      return res.json({
+      return res.status(401).json({
         success: false,
-        message: 'Not authorized. Login again',
+        message: 'Not authorized',
       });
     }
 
     next();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    res.json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
