@@ -5,7 +5,7 @@ import { FunctionalDependencyState } from '../utils/types';
 //get table list
 export const getTableList = async (req: Request, res: Response) => {
   try {
-    const tables = await TableInfoModel.find().exec();
+    const tables = await TableInfoModel.find({ user: req.body.userId });
     res.status(200).json(tables);
   } catch (error) {
     console.error('Error getting tables:', error);
