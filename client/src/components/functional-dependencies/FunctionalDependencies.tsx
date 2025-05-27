@@ -12,9 +12,10 @@ import { AttributesInFD } from '../attributes-in-fd';
 import { Attribute } from '../../utils/types';
 import { DependenciesList } from '../dependencies-list';
 import { setError } from '../../redux/slices/errorSlice';
+import { ImSpinner2 } from 'react-icons/im';
 
 type Props = {
-  onCancelClick: React.MouseEventHandler<HTMLButtonElement>;
+  onCancelClick: () => void;
 };
 
 export const FunctionalDependencies = (props: Props) => {
@@ -63,7 +64,7 @@ export const FunctionalDependencies = (props: Props) => {
       );
 
       const newFD: FunctionalDependency = {
-        id: crypto.randomUUID(),
+        id: String(1234 + Math.random() * 99999),
         determinant: selectedDeterminantNames,
         dependent: selectedDependentNames,
         tableName: selectedTable,
@@ -83,29 +84,35 @@ export const FunctionalDependencies = (props: Props) => {
       .catch(() => {
         dispatch(setError('Не удалось сохранить функциональные зависимости'));
       });
+
+    if (onCancelClick) onCancelClick();
   };
 
   return (
-    <div className="p-5 max-w-3xl mx-auto border border-gray-200 rounded-lg bg-white shadow-sm">
-      <h2>Функциональные зависимости</h2>
+    <>
       <div className="flex flex-col gap-5 my-5 p-4 border border-gray-200 rounded bg-gray-50">
         <div className="flex flex-col gap-2">
           <label htmlFor="tableSelect">Отношение:</label>
-          <select
-            id="tableSelect"
-            value={selectedTable}
-            onChange={(e) => setSelectedTable(e.target.value)}
-            disabled={isLoading}
-            className="px-3 py-2 border border-gray-300 rounded bg-white"
-          >
-            <option value="">---</option>
-            {tables.map((table) => (
-              <option key={table.name} value={table.name}>
-                {table.name}
-              </option>
-            ))}
-          </select>
-          {isLoading && <small>Загрузка...</small>}
+          {isLoading ? (
+            <ImSpinner2 className="spinner my-1 mx-auto" />
+          ) : (
+            <select
+              id="tableSelect"
+              value={selectedTable}
+              onChange={(e) => setSelectedTable(e.target.value)}
+              disabled={isLoading}
+              className="px-3 py-2 border border-gray-300 rounded bg-white"
+            >
+              <>
+                <option value="">---</option>
+                {tables.map((table) => (
+                  <option key={table.name} value={table.name}>
+                    {table.name}
+                  </option>
+                ))}
+              </>
+            </select>
+          )}
         </div>
         {selectedTable && (
           <>
@@ -125,7 +132,7 @@ export const FunctionalDependencies = (props: Props) => {
               />
             </div>
             <button
-              className="btn-primary self-start"
+              className="btn-primary m-auto"
               onClick={handleAddDependency}
               disabled={
                 !selectedDeterminant.length || !selectedDependent.length
@@ -137,7 +144,7 @@ export const FunctionalDependencies = (props: Props) => {
         )}
       </div>
       {dependenciesSelector.length !== 0 && <DependenciesList />}
-      <span className="flex self-end gap-3">
+      <span className="flex gap-3 mt-5">
         <button
           onClick={handleConfirm}
           disabled={dependenciesSelector.length === 0}
@@ -149,6 +156,6 @@ export const FunctionalDependencies = (props: Props) => {
           Отмена
         </button>
       </span>
-    </div>
+    </>
   );
 };

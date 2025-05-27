@@ -15,7 +15,7 @@ export const Home = () => {
   };
 
   return (
-    <div className="flex justify-around items-center min-h-screen">
+    <div className="flex justify-around items-center mt-18">
       <div className="flex flex-col items-start gap-4 py-5 ">
         <h1 className="font-medium text-3xl text-[#252b35]">
           Приведите свою базу данных в порядок

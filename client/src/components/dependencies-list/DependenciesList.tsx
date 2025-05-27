@@ -9,7 +9,7 @@ export const DependenciesList = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <ul className="mt-8">
+    <ul>
       {dependenciesSelector?.map((fd) => (
         <li
           key={fd.id}
@@ -17,11 +17,11 @@ export const DependenciesList = () => {
         >
           <span className="font-semibold text-gray-600">{fd.tableName}: </span>
           <span className="bg-gray-100 px-2 py-1 rounded font-mono">
-            {fd.determinant.map((attribute) => attribute).join(', ')}
+            {fd.determinant.join(', ')}
           </span>
           <span className="text-gray-600 font-bold"> → </span>
           <span className="bg-gray-100 px-2 py-1 rounded font-mono">
-            {fd.dependent.map((attribute) => attribute).join(', ')}
+            {fd.dependent.join(', ')}
           </span>
           <button
             className="ml-auto px-3 py-1.5 bg-red-400 text-white rounded text-sm transition-all duration-200 hover:bg-red-500"

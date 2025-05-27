@@ -2,20 +2,16 @@ import { useAppDispatch } from '../../redux/hooks';
 import { MdClear } from 'react-icons/md';
 import { VscKey } from 'react-icons/vsc';
 import { removeAttributeFromTable } from '../../redux/slices/tableSchemaSlice';
+import { Attribute as AttributeType } from '../../utils/types';
 
 type AttributeProps = {
-  attribute: {
-    name: string;
-    isPrimaryKey: boolean;
-    foreignKeyReference?: {
-      attributeName: string;
-      tableName: string;
-    };
-  };
+  attribute: AttributeType;
+  className?: string;
+  readonly?: boolean;
 };
 
 export const Attribute = (props: AttributeProps) => {
-  const { attribute } = props;
+  const { attribute, className, readonly } = props;
   const dispatch = useAppDispatch();
 
   const handleClick = (name: string) => {
@@ -23,11 +19,13 @@ export const Attribute = (props: AttributeProps) => {
   };
 
   return (
-    <li className="flex flex-row gap-1.5 items-center">
-      <MdClear
-        className=" text-gray-500 hover:text-gray-700"
-        onClick={() => handleClick(attribute.name)}
-      />
+    <li className={`flex flex-row gap-1.5 items-center ${className}`}>
+      {!readonly && (
+        <MdClear
+          className=" text-gray-500 hover:text-gray-700"
+          onClick={() => handleClick(attribute.name)}
+        />
+      )}
       <h5>{attribute.name}</h5>
       {attribute.isPrimaryKey && (
         <VscKey
