@@ -8,11 +8,11 @@ export const tableSchemaApi = createApi({
     credentials: 'include',
   }),
 
-  tagTypes: ['TableInfo'],
+  tagTypes: ['TableInfo', 'Auth'],
   endpoints: (builder) => ({
     getTableInfos: builder.query<TableSchema[], void>({
       query: () => '/tables',
-      providesTags: ['TableInfo'],
+      providesTags: ['TableInfo', 'Auth'],
     }),
     createTableInfo: builder.mutation<void, TableSchema>({
       query: (body) => ({
@@ -22,8 +22,19 @@ export const tableSchemaApi = createApi({
       }),
       invalidatesTags: ['TableInfo'],
     }),
+    normalizeTable: builder.mutation<TableSchema[], TableSchema>({
+      query: (body) => ({
+        url: `/tables/normalize/${body.name}`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['TableInfo'],
+    }),
   }),
 });
 
-export const { useGetTableInfosQuery, useCreateTableInfoMutation } =
-  tableSchemaApi;
+export const {
+  useGetTableInfosQuery,
+  useCreateTableInfoMutation,
+  useNormalizeTableMutation,
+} = tableSchemaApi;

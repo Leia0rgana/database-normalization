@@ -1,20 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { ForeignKeyReference } from '../../utils/types';
-export interface AttributeState {
-  name: string;
-  isPrimaryKey: boolean;
-  foreignKeyReference?: ForeignKeyReference;
-}
+import { Attribute, TableSchema } from '../../utils/types';
 
-export interface TableSchemaState {
-  tableName: string;
-  attributeList: AttributeState[];
-}
-
-const initialState: TableSchemaState = {
-  tableName: '',
+const initialState: TableSchema = {
+  name: '',
   attributeList: [],
 };
 
@@ -23,9 +13,9 @@ export const tableSchemaSlice = createSlice({
   initialState,
   reducers: {
     setTableName: (state, action: PayloadAction<string>) => {
-      state.tableName = action.payload;
+      state.name = action.payload;
     },
-    addAttributeToTable: (state, action: PayloadAction<AttributeState>) => {
+    addAttributeToTable: (state, action: PayloadAction<Attribute>) => {
       state.attributeList.push(action.payload);
     },
     removeAttributeFromTable: (state, action: PayloadAction<string>) => {
@@ -42,8 +32,7 @@ export const tableSchemaSlice = createSlice({
   },
 });
 
-export const selectTableName = (state: RootState) =>
-  state.tableSchema.tableName;
+export const selectTableName = (state: RootState) => state.tableSchema.name;
 export const selectAttributeList = (state: RootState) =>
   state.tableSchema.attributeList;
 

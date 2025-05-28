@@ -12,7 +12,7 @@ export const userApi = createApi({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: 'include',
   }),
-  tagTypes: ['Auth'],
+  tagTypes: ['Auth', 'TableInfo'],
   endpoints: (builder) => ({
     createUser: builder.mutation<void, User>({
       query: (body) => ({
@@ -28,7 +28,7 @@ export const userApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Auth'],
+      invalidatesTags: ['Auth', 'TableInfo'],
     }),
     logoutUser: builder.mutation<void, void>({
       query: (body) => ({
@@ -36,15 +36,15 @@ export const userApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Auth'],
+      invalidatesTags: ['Auth', 'TableInfo'],
     }),
     getUserData: builder.query<UserResponse, void>({
       query: () => '/user/data',
-      providesTags: ['Auth'],
+      providesTags: ['Auth', 'TableInfo'],
     }),
     getIsUserAuth: builder.query<Response, void>({
       query: () => '/auth/is-auth',
-      providesTags: ['Auth'],
+      providesTags: ['Auth', 'TableInfo'],
     }),
   }),
 });

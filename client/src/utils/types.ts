@@ -41,3 +41,10 @@ export type UserData = {
 export type Response = {
   success: boolean;
 };
+
+export type TableInfo = {
+  user: string;
+  name: string;
+  attributeList: Attribute[];
+  functionalDependencies: FunctionalDependency[];
+};

@@ -5,8 +5,8 @@ export const functionalDependenciesApi = createApi({
   reducerPath: 'functionalDependenciesApi',
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
-    credentials: 'include',
   }),
+  tagTypes: ['Dependencies'],
   endpoints: (builder) => ({
     addFunctionalDependencies: builder.mutation<void, FunctionalDependency[]>({
       query: (body) => ({
@@ -14,9 +14,16 @@ export const functionalDependenciesApi = createApi({
         method: 'PATCH',
         body,
       }),
+      invalidatesTags: ['Dependencies'],
+    }),
+    getFunctionalDependencies: builder.query<FunctionalDependency[], string>({
+      query: (name: string) => `/tables/dependencies/${name}`,
+      providesTags: ['Dependencies'],
     }),
   }),
 });
 
-export const { useAddFunctionalDependenciesMutation } =
-  functionalDependenciesApi;
+export const {
+  useAddFunctionalDependenciesMutation,
+  useGetFunctionalDependenciesQuery,
+} = functionalDependenciesApi;
