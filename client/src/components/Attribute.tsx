@@ -1,8 +1,8 @@
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch } from '../redux/hooks';
 import { MdClear } from 'react-icons/md';
 import { VscKey } from 'react-icons/vsc';
-import { removeAttributeFromTable } from '../../redux/slices/tableSchemaSlice';
-import { Attribute as AttributeType } from '../../utils/types';
+import { removeAttributeFromTable } from '../redux/slices/tableSchemaSlice';
+import { Attribute as AttributeType } from '../utils/types';
 
 type AttributeProps = {
   attribute: AttributeType;

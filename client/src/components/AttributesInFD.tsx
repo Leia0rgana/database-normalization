@@ -1,5 +1,5 @@
 import React from 'react';
-import { Attribute } from '../../utils/types';
+import { Attribute } from '../utils/types';
 
 type AttributesInFDProps = {
   label: string;

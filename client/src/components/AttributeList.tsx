@@ -1,6 +1,6 @@
-import { useAppSelector } from '../../redux/hooks';
-import { selectAttributeList } from '../../redux/slices/tableSchemaSlice';
-import { Attribute } from '../attribute';
+import { useAppSelector } from '../redux/hooks';
+import { selectAttributeList } from '../redux/slices/tableSchemaSlice';
+import { Attribute } from './Attribute';
 
 export const AttributeList = () => {
   const attributeListSelector = useAppSelector(selectAttributeList);

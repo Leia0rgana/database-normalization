@@ -1,17 +1,17 @@
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
   addFunctionalDependency,
   clearFunctionalDependencies,
   selectFunctionalDependencies,
   type FunctionalDependency,
-} from '../../redux/slices/functionalDependenciesSlice';
-import { useGetTableInfosQuery } from '../../redux/api/tableSchemaApi';
-import { useAddFunctionalDependenciesMutation } from '../../redux/api/functionalDependenciesApi';
-import { AttributesInFD } from '../attributes-in-fd';
-import { Attribute } from '../../utils/types';
-import { DependenciesList } from '../dependencies-list';
-import { setError } from '../../redux/slices/errorSlice';
+} from '../redux/slices/functionalDependenciesSlice';
+import { useGetTableInfosQuery } from '../redux/api/tableSchemaApi';
+import { useAddFunctionalDependenciesMutation } from '../redux/api/functionalDependenciesApi';
+import { AttributesInFD } from './AttributesInFD';
+import { Attribute } from '../utils/types';
+import { DependenciesList } from './DependenciesList';
+import { setError } from '../redux/slices/errorSlice';
 import { ImSpinner2 } from 'react-icons/im';
 
 type Props = {

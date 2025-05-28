@@ -1,18 +1,17 @@
 import React from 'react';
-import { AttributeForm } from '../attribute-form';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { AttributeForm } from './AttributeForm';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
   setTableName,
-  clearSchema,
   selectAttributeList,
   selectTableName,
-} from '../../redux/slices/tableSchemaSlice';
-import { AttributeList } from '../attribute-list';
-import { useCreateTableInfoMutation } from '../../redux/api/tableSchemaApi';
-import { setError } from '../../redux/slices/errorSlice';
+} from '../redux/slices/tableSchemaSlice';
+import { AttributeList } from './AttributeList';
+import { useCreateTableInfoMutation } from '../redux/api/tableSchemaApi';
+import { setError } from '../redux/slices/errorSlice';
 
 type Props = {
-  onCancelClick: React.MouseEventHandler<HTMLButtonElement>;
+  onCancelClick: () => void;
 };
 
 export const TableSchema = (props: Props) => {
@@ -44,18 +43,19 @@ export const TableSchema = (props: Props) => {
       .unwrap()
       .then(() => {
         setTableValue('');
-        dispatch(clearSchema());
       })
       .catch(() => {
         dispatch(setError('Не удалось добавить информацию о таблице'));
       });
+
+    if (typeof onCancelClick === 'function') onCancelClick();
   };
 
   return (
     <div className="flex flex-col gap-4 items-start w-fit p-6 my-4 rounded-lg shadow-lg border border-gray-300">
       <span className="flex flex-col gap-2">
         <label htmlFor="tableName" className="font-medium">
-          Таблица
+          Название
         </label>
         <input
           type="text"

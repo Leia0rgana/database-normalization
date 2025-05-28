@@ -1,8 +1,8 @@
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
   removeFunctionalDependency,
   selectFunctionalDependencies,
-} from '../../redux/slices/functionalDependenciesSlice';
+} from '../redux/slices/functionalDependenciesSlice';
 
 export const DependenciesList = () => {
   const dependenciesSelector = useAppSelector(selectFunctionalDependencies);

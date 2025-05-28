@@ -1,13 +1,13 @@
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
   selectAttributeList,
   addAttributeToTable,
-} from '../../redux/slices/tableSchemaSlice';
-import { TableDropdown } from '../table-dropdown';
-import { ForeignKeyReference } from '../../utils/types';
+} from '../redux/slices/tableSchemaSlice';
+import { TableDropdown } from './TableDropdown';
+import { ForeignKeyReference } from '../utils/types';
 import { VscKey } from 'react-icons/vsc';
-import { setError } from '../../redux/slices/errorSlice';
+import { setError } from '../redux/slices/errorSlice';
 
 export const AttributeForm = () => {
   const [name, setName] = React.useState<string>('');

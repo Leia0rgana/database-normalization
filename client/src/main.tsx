@@ -7,8 +7,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import { PageNotFound } from './components/routes/PageNotFound';
 import { MainLayout } from './components/routes/MainLayout';
 import { Home } from './components/routes/Home';
-import { Login } from './components/routes/Login.tsx';
-import { ProtectedRoute } from './components/routes/ProtectedRoute.tsx';
+import { Login } from './components/routes/Login';
+import { ProtectedRoute } from './components/routes/ProtectedRoute';
 
 const router = createBrowserRouter([
   {

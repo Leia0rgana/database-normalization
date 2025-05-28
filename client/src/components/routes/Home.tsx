@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
-import { useAppSelector } from '../../../redux/hooks';
-import { selectUser } from '../../../redux/slices/userSlice';
+import { useAppSelector } from '../../redux/hooks';
+import { selectUser } from '../../redux/slices/userSlice';
 
 export const Home = () => {
   const userDataSelector = useAppSelector(selectUser);
@@ -15,8 +15,8 @@ export const Home = () => {
   };
 
   return (
-    <div className="flex justify-around items-center mt-18">
-      <div className="flex flex-col items-start gap-4 py-5 ">
+    <div className="flex  flex-col md:flex-row justify-around items-center md:mt-18">
+      <div className="flex flex-col items-start gap-2 py-5 px-5 text-center md:text-left md:gap-4 md:px-0 md:pl-5">
         <h1 className="font-medium text-3xl text-[#252b35]">
           Приведите свою базу данных в порядок
         </h1>
@@ -25,7 +25,7 @@ export const Home = () => {
           <br />и обеспечить целостность данных без сложных теорий
         </p>
         <button
-          className="bg-[#1A80E5] hover:bg-[#5ba3eb] text-white font-semibold p-[10px] rounded-xl active:outline-2 active:outline-blue-400/50 transition duration-400 ease-in-out mt-3 w-[20%] min-w-25"
+          className="bg-[#1A80E5] hover:bg-[#5ba3eb] text-white font-semibold p-[10px] rounded-xl active:outline-2 active:outline-blue-400/50 transition duration-400 ease-in-out mt-3 w-[20%] min-w-25 self-center md:self-start"
           onClick={handleStartClick}
         >
           Начать
@@ -33,10 +33,9 @@ export const Home = () => {
       </div>
       <img
         src="/images/main.svg"
-        alt="tables in dbш98"
+        alt="tables in database"
         decoding="async"
-        width="50%"
-        className="hue-rotate-16"
+        className="hue-rotate-16 w-full max-w-lg md:max-w-md lg:max-w-xl object-contain"
       />
     </div>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
-import { TableList } from '../table-list';
-import { useClickOutside } from '../../hooks/useClickOutside';
-import { ForeignKeyReference } from '../../utils/types';
+import { TableList } from './TableList';
+import { useClickOutside } from '../hooks/useClickOutside';
+import { ForeignKeyReference } from '../utils/types';
 
 type TableDropdownProps = {
   label: string;

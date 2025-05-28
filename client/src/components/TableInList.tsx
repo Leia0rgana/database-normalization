@@ -1,4 +1,4 @@
-import { TableSchema } from '../../utils/types';
+import { TableSchema } from '../utils/types';
 
 type TableProps = {
   tableInfo: TableSchema;
@@ -6,7 +6,7 @@ type TableProps = {
   className?: string;
   isDropdown?: boolean;
   isOpen: boolean;
-  onToggleTable: (tableName: string) => void;
+  onToggleTable: (tableInfo: TableSchema) => void;
 };
 
 export const TableInList = (props: TableProps) => {
@@ -20,7 +20,7 @@ export const TableInList = (props: TableProps) => {
   } = props;
 
   return (
-    <div className={className} onClick={() => onToggleTable(tableInfo?.name)}>
+    <div className={className} onClick={() => onToggleTable(tableInfo)}>
       <h5 className="font-light">{tableInfo?.name}</h5>
       {isOpen && (
         <ul
