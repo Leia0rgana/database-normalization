@@ -17,12 +17,17 @@ export type FunctionalDependency = {
   dependent: string[];
 };
 
-export type FunctionalDependencyState = FunctionalDependency & {
+export interface FunctionalDependencyState {
   tableName: string;
-};
+  determinant: string[];
+  dependent: string[];
+}
 
 export type TableInfo = {
+  user: string;
   name: string;
   attributeList: Attribute[];
   functionalDependencies: FunctionalDependency[];
+  normalized?: boolean;
+  originalTableName?: string;
 };

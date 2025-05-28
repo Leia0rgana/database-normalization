@@ -4,10 +4,24 @@ import { TableInfo, FunctionalDependency } from '../utils/types';
 export const normalizeTo2NF = async (
   originalTable: TableInfo
 ): Promise<TableInfo[]> => {
-  const resultTables: TableInfo[] = [originalTable];
+  // Создаем глубокую копию исходной таблицы
+  const originalTableCopy: TableInfo = {
+    name: originalTable.name + ' (2НФ)',
+    user: originalTable.user,
+    attributeList: JSON.parse(JSON.stringify(originalTable.attributeList)),
+    functionalDependencies: JSON.parse(
+      JSON.stringify(originalTable.functionalDependencies)
+    ),
+  };
+  // const originalTableCopy: TableInfo = JSON.parse(
+  //   JSON.stringify(originalTable)
+  // );
+
+  console.log(originalTableCopy);
+  const resultTables: TableInfo[] = [originalTableCopy];
 
   // 1. Выделяем составной первичный ключ
-  const primaryKey = originalTable.attributeList
+  const primaryKey = originalTableCopy.attributeList
     .filter((attr) => attr.isPrimaryKey)
     .map((attr) => attr.name);
 
@@ -17,7 +31,7 @@ export const normalizeTo2NF = async (
   // 3. Анализ функциональных зависимостей
   const partialDependencies: FunctionalDependency[] = [];
 
-  for (const fd of originalTable.functionalDependencies) {
+  for (const fd of originalTableCopy.functionalDependencies) {
     // 4. Проверяем частичную зависимость
     const determinantIsSubset = fd.determinant.every((d) =>
       primaryKey.includes(d)
@@ -48,7 +62,7 @@ export const normalizeTo2NF = async (
     });
 
     if (existingTable) {
-      // Обновляем исходную таблицу
+      // Обновляем копию исходной таблицы
       const originalTableRef = resultTables[0];
 
       // Добавляем ссылки на существующую таблицу
@@ -64,15 +78,26 @@ export const normalizeTo2NF = async (
         }
       });
 
-      // Удаляем зависимые атрибуты
+      // Удаляем зависимые атрибуты из копии
       originalTableRef.attributeList = originalTableRef.attributeList.filter(
         (attr) => !pd.dependent.includes(attr.name)
       );
 
-      resultTables.push(existingTable as unknown as TableInfo); // TODO fix
+      // Удаляем функциональную зависимость, от которой избавились
+      originalTableRef.functionalDependencies =
+        originalTableRef.functionalDependencies.filter(
+          (fd) =>
+            !(
+              fd.determinant.join(',') === pd.determinant.join(',') &&
+              fd.dependent.join(',') === pd.dependent.join(',')
+            )
+        );
+
+      resultTables.push(existingTable as unknown as TableInfo);
     } else {
       const newTable: TableInfo = {
-        name: `${originalTable.name}_${pd.determinant.join('_')}`,
+        user: originalTableCopy.user,
+        name: `${originalTableCopy.name}_${pd.determinant.join('_')}`,
         attributeList: [],
         functionalDependencies: [],
       };
@@ -86,14 +111,14 @@ export const normalizeTo2NF = async (
       // Добавляем зависимые атрибуты
       newTable.attributeList.push(
         ...pd.dependent.map((name) => ({
-          ...originalTable.attributeList.find((a) => a.name === name)!,
+          ...originalTableCopy.attributeList.find((a) => a.name === name)!,
           isPrimaryKey: false,
         }))
       );
 
-      // Добавляем внешние ключи к существующим атрибутам
+      // Добавляем внешние ключи к существующим атрибутам в копии
       pd.determinant.forEach((determinantAttrName) => {
-        const attr = originalTable.attributeList.find(
+        const attr = originalTableCopy.attributeList.find(
           (a) => a.name === determinantAttrName
         );
         if (attr) {
@@ -104,10 +129,20 @@ export const normalizeTo2NF = async (
         }
       });
 
-      // Удаляем зависимые атрибуты из исходной таблицы
-      originalTable.attributeList = originalTable.attributeList.filter(
+      // Удаляем зависимые атрибуты из копии
+      originalTableCopy.attributeList = originalTableCopy.attributeList.filter(
         (attr) => !pd.dependent.includes(attr.name)
       );
+
+      // Удаляем функциональную зависимость, от которой избавились
+      originalTableCopy.functionalDependencies =
+        originalTableCopy.functionalDependencies.filter(
+          (fd) =>
+            !(
+              fd.determinant.join(',') === pd.determinant.join(',') &&
+              fd.dependent.join(',') === pd.dependent.join(',')
+            )
+        );
 
       resultTables.push(newTable);
     }
