@@ -16,9 +16,6 @@ export const getPrimaryKey = (table: TableInfo): string[] =>
     .filter((attr) => attr.isPrimaryKey)
     .map((attr) => attr.name);
 
-// const isSubset = (subset: string[], superset: string[]): boolean =>
-//   subset.every((item) => superset.includes(item));
-
 export const isStrictSubset = (
   subset: string[],
   superset: string[]
