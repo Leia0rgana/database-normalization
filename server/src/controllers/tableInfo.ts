@@ -92,7 +92,6 @@ export const normalizeTable = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Table name is required' });
     }
 
-    // Находим таблицу
     const table = await TableInfoModel.findOne({
       name,
       user: userId,
@@ -102,19 +101,16 @@ export const normalizeTable = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Table not found' });
     }
 
-    // Нормализуем таблицу
     const normalizedTables = await normalizeTo2NF(
       table as unknown as TableInfo
     );
 
-    // Сохраняем новые таблицы в базу данных
     const savedTables = await Promise.all(
       normalizedTables.map(async (newTable) => {
-        // Создаем новую таблицу с флагом normalized
         return await TableInfoModel.create({
           ...newTable,
           user: userId,
-          originalTableName: table.name, // Добавляем ссылку на исходную таблицу
+          originalTableName: table.name,
         });
       })
     );
@@ -123,5 +119,87 @@ export const normalizeTable = async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error normalizing table:', error);
     res.status(500).json({ error: 'Failed to normalize table' });
+  }
+};
+
+export const deleteTable = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userId = req.body.userId;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        error: 'User must be authenticated to delete',
+      });
+    }
+
+    if (!id) {
+      return res.status(400).json({ error: 'Table ID is required' });
+    }
+
+    const deleteResult = await TableInfoModel.deleteOne({
+      _id: id,
+      user: userId,
+    });
+
+    if (deleteResult.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Table not found for this user or already deleted',
+      });
+    }
+
+    res
+      .status(200)
+      .json({ success: true, message: 'Table deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting table:', error);
+    res.status(500).json({ error: 'Failed to delete table' });
+  }
+};
+
+export const updateTable = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { userId, name, attributeList } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({
+        error: 'User must be authenticated to update',
+      });
+    }
+
+    if (!id || !name || !attributeList) {
+      return res.status(400).json({ error: 'Missing details' });
+    }
+
+    const updatedTable = await TableInfoModel.findOneAndUpdate(
+      {
+        _id: id,
+        user: userId,
+      },
+      {
+        $set: {
+          name: name,
+          attributeList: attributeList,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!updatedTable) {
+      return res.status(404).json({
+        error: 'Table to update not found for this user',
+      });
+    }
+
+    res.status(200).json(updatedTable);
+  } catch (error) {
+    console.error('Error updating table:', error);
+    res.status(500).json({ error: 'Failed to update table' });
   }
 };
