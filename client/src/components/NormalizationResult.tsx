@@ -1,4 +1,5 @@
 import { TableSchema } from '../utils/types';
+import { TableInNormalizationResult } from './TableInNormalizationResult';
 
 type Props = {
   originalTable: TableSchema;
@@ -36,38 +37,12 @@ export const NormalizationResult = (props: Props) => {
               </svg>
             </button>
           </div>
-
-          {/* Исходная таблица */}
-          <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-700 mb-3">
-              Исходное отношение: {originalTable.name}
-            </h3>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <h4 className="font-medium text-gray-600 mb-2">Атрибуты:</h4>
-                  <ul className="space-y-1">
-                    {originalTable.attributeList.map((attr) => (
-                      <li
-                        key={attr.name}
-                        className="flex items-center space-x-2 text-gray-700"
-                      >
-                        <span>{attr.name}</span>
-                        {attr.isPrimaryKey && (
-                          <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                            PK
-                          </span>
-                        )}
-                        {attr.foreignKeyReference && (
-                          <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">
-                            FK
-                          </span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                {/* <div>
+          <TableInNormalizationResult
+            className="mb-8"
+            table={originalTable}
+            label="Исходное отношение"
+          />
+          {/* <div>
                   <h4 className="font-medium text-gray-600 mb-2">
                     Функциональные зависимости:
                   </h4>
@@ -79,72 +54,18 @@ export const NormalizationResult = (props: Props) => {
                     ))}
                   </ul>
                 </div> */}
-              </div>
-            </div>
-          </div>
 
-          {/* Результаты нормализации */}
-          <div>
+          <div className="mb-8">
             <h3 className="text-lg font-semibold text-gray-700 mb-3">
               Отношения после нормализации:
             </h3>
             <div className="space-y-6">
               {normalizedTables.map((table) => (
-                <div
+                <TableInNormalizationResult
                   key={table.name}
-                  className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-lg font-medium text-gray-800">
-                      {table.name}
-                    </h4>
-                    {table.name !== originalTable.name && (
-                      <span className="text-sm bg-purple-100 text-purple-800 px-3 py-1 rounded-full">
-                        Новое отношение
-                      </span>
-                    )}
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <h5 className="font-medium text-gray-600 mb-2">
-                        Атрибуты:
-                      </h5>
-                      <ul className="space-y-1">
-                        {table.attributeList.map((attr) => (
-                          <li
-                            key={attr.name}
-                            className="flex items-center space-x-2 text-gray-700"
-                          >
-                            <span>{attr.name}</span>
-                            {attr.isPrimaryKey && (
-                              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
-                                PK
-                              </span>
-                            )}
-                            {attr.foreignKeyReference && (
-                              <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">
-                                FK
-                              </span>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    {/* <div>
-                      <h5 className="font-medium text-gray-600 mb-2">
-                        Функциональные зависимости:
-                      </h5>
-                      <ul className="space-y-2">
-                        {table.functionalDependencies.map((fd, index) => (
-                          <li key={index} className="text-gray-700">
-                            {fd.determinant.join(', ')} →{' '}
-                            {fd.dependent.join(', ')}
-                          </li>
-                        ))}
-                      </ul>
-                    </div> */}
-                  </div>
-                </div>
+                  table={table}
+                  label="Новое отношение"
+                />
               ))}
             </div>
           </div>
