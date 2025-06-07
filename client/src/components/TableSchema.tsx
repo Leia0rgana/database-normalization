@@ -45,7 +45,7 @@ export const TableSchema = (props: Props) => {
         setTableValue('');
       })
       .catch(() => {
-        dispatch(setError('Не удалось добавить информацию о таблице'));
+        dispatch(setError('Не удалось добавить информацию об отношении'));
       });
 
     if (typeof onCancelClick === 'function') onCancelClick();

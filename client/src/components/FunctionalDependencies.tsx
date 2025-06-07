@@ -38,7 +38,7 @@ export const FunctionalDependencies = (props: Props) => {
 
   React.useEffect(() => {
     if (isError) {
-      dispatch(setError('Не удалось получить данные о таблицах'));
+      dispatch(setError('Не удалось получить данные об отношениях'));
     }
   }, [dispatch, isError]);
 
