@@ -17,24 +17,14 @@ export const Login = () => {
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
 
-  const [createUser, { isLoading: isCreateLoading, isError: isCreateError }] =
-    useCreateUserMutation();
-  const [loginUser, { isLoading: isLoginLoading, isError: isLoginError }] =
-    useLoginUserMutation();
+  const [createUser, { isLoading: isCreateLoading }] = useCreateUserMutation();
+  const [loginUser, { isLoading: isLoginLoading }] = useLoginUserMutation();
 
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
 
   const from = location.state?.from?.pathname || '/normalization';
-
-  React.useEffect(() => {
-    if (isCreateError) {
-      dispatch(setError('Не удалось создать аккаунт с такими данными'));
-    } else if (isLoginError) {
-      dispatch(setError('Данные для входа некорректны'));
-    }
-  }, [dispatch, isCreateError, isLoginError]);
 
   const INPUT_CONTAINER_CLASSNAME = 'flex items-center gap-3 justify-center';
   const INPUT_CLASSNAME =
