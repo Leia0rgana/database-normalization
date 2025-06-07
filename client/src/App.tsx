@@ -75,16 +75,22 @@ function App() {
         {selectedTable ? (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">{selectedTable.name}</h2>
-              <button
-                className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                onClick={handleNormalize}
-                disabled={
-                  !selectedTable || isLoading || dependencies?.length === 0
-                }
-              >
-                {isLoading ? 'Нормализация...' : 'Нормализовать'}
-              </button>
+              <h2 className="text-xl font-semibold">{selectedTable.name} </h2>
+              {selectedTable.normalized ? (
+                <div className="bg-[#CF881B] text-white px-4 py-2 rounded">
+                  Отношение нормализовано
+                </div>
+              ) : (
+                <button
+                  className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={handleNormalize}
+                  disabled={
+                    !selectedTable || isLoading || dependencies?.length === 0
+                  }
+                >
+                  {isLoading ? 'Нормализация...' : 'Нормализовать'}
+                </button>
+              )}
             </div>
             <TableAttributes tableInfo={selectedTable} />
             <TableDependecies

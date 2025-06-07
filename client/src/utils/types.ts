@@ -25,6 +25,7 @@ export type FunctionalDependencyState = FunctionalDependency & {
 export type TableSchema = {
   name: string;
   attributeList: Array<Attribute>;
+  normalized?: boolean;
 };
 
 export type User = {
@@ -47,4 +48,5 @@ export type TableInfo = {
   name: string;
   attributeList: Attribute[];
   functionalDependencies: FunctionalDependency[];
+  normalized?: boolean;
 };
