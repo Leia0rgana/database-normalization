@@ -24,6 +24,7 @@ export interface FunctionalDependencyState {
 }
 
 export type TableInfo = {
+  _id?: string;
   user: string;
   name: string;
   attributeList: Attribute[];

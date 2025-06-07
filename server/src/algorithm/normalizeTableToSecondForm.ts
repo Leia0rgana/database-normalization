@@ -61,5 +61,12 @@ export const normalizeTo2NF = async (
     }
   }
 
+  if (resultTables.length > 1 && originalTable._id) {
+    await tableInfo.updateOne(
+      { _id: originalTable._id },
+      { $set: { normalized: true } }
+    );
+  }
+
   return resultTables;
 };

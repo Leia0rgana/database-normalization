@@ -114,7 +114,6 @@ export const normalizeTable = async (req: Request, res: Response) => {
         return await TableInfoModel.create({
           ...newTable,
           user: userId,
-          normalized: true,
           originalTableName: table.name, // Добавляем ссылку на исходную таблицу
         });
       })
