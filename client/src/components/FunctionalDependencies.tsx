@@ -116,14 +116,14 @@ export const FunctionalDependencies = (props: Props) => {
         </div>
         {selectedTable && (
           <>
-            <div className="flex items-center gap-2.5">
+            <div className="flex flex-col sm:flex-row items-center sm:gap-2.5">
               <AttributesInFD
                 label="Детерминант:"
                 selectedTableAttributes={selectedTableAttributes}
                 selectedAttributes={selectedDeterminant}
                 onChangeHandler={setSelectedDeterminant}
               />
-              <div className="text-2xl text-gray-600 text-center my-2.5">→</div>
+              <div className="text-2xl text-gray-600 text-center">→</div>
               <AttributesInFD
                 label="Зависимые атрибуты:"
                 selectedTableAttributes={selectedTableAttributes}
@@ -144,7 +144,7 @@ export const FunctionalDependencies = (props: Props) => {
         )}
       </div>
       {dependenciesSelector.length !== 0 && <DependenciesList />}
-      <span className="flex gap-3 mt-5">
+      <span className="flex justify-center sm:justify-start gap-3 mt-5">
         <button
           onClick={handleConfirm}
           disabled={dependenciesSelector.length === 0}

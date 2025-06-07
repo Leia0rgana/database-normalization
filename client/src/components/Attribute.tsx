@@ -26,7 +26,7 @@ export const Attribute = (props: AttributeProps) => {
           onClick={() => handleClick(attribute.name)}
         />
       )}
-      <h5>{attribute.name}</h5>
+      <h5 className="truncate">{attribute.name}</h5>
       {attribute.isPrimaryKey && (
         <VscKey
           className="text-lg text-yellow-400 ml-1 cursor-help"
