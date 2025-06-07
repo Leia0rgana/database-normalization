@@ -4,6 +4,7 @@ import { RootState } from '../store';
 import { Attribute, TableSchema } from '../../utils/types';
 
 const initialState: TableSchema = {
+  _id: '',
   name: '',
   attributeList: [],
 };
@@ -12,6 +13,9 @@ export const tableSchemaSlice = createSlice({
   name: 'tableSchema',
   initialState,
   reducers: {
+    setTableID: (state, action: PayloadAction<string>) => {
+      state._id = action.payload;
+    },
     setTableName: (state, action: PayloadAction<string>) => {
       state.name = action.payload;
     },
@@ -23,6 +27,9 @@ export const tableSchemaSlice = createSlice({
         (attribute) => attribute.name !== action.payload
       );
     },
+    setAttributeList: (state, action: PayloadAction<Attribute[]>) => {
+      state.attributeList = action.payload;
+    },
     clearList: (state) => {
       state.attributeList = [];
     },
@@ -33,6 +40,7 @@ export const tableSchemaSlice = createSlice({
 });
 
 export const selectTableName = (state: RootState) => state.tableSchema.name;
+export const selectTableID = (state: RootState) => state.tableSchema._id;
 export const selectAttributeList = (state: RootState) =>
   state.tableSchema.attributeList;
 
@@ -42,6 +50,8 @@ export const {
   clearList,
   setTableName,
   clearSchema,
+  setAttributeList,
+  setTableID,
 } = tableSchemaSlice.actions;
 
 export default tableSchemaSlice.reducer;

@@ -15,10 +15,11 @@ type TableListProps = {
 
 export const TableList = (props: TableListProps) => {
   const { isDropdown, onSelectItem, onTableSelect, selectedTable } = props;
-  const { data: tableInfos = [], isLoading, isError } = useGetTableInfosQuery();
   const [openedTableName, setOpenedTableName] = React.useState<string | null>(
     null
   );
+
+  const { data: tableInfos = [], isLoading, isError } = useGetTableInfosQuery();
 
   const dispatch = useDispatch();
 
@@ -66,7 +67,7 @@ export const TableList = (props: TableListProps) => {
       )}
       {tableInfos?.map((tableInfo) => (
         <TableInList
-          key={tableInfo.name}
+          key={tableInfo._id || tableInfo.name}
           tableInfo={tableInfo}
           className={listItemStyles(selectedTable === tableInfo.name)}
           isDropdown={isDropdown}

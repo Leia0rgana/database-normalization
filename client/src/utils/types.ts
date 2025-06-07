@@ -23,6 +23,7 @@ export type FunctionalDependencyState = FunctionalDependency & {
 };
 
 export type TableSchema = {
+  _id?: string;
   name: string;
   attributeList: Array<Attribute>;
   normalized?: boolean;

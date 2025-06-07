@@ -5,24 +5,44 @@ import {
   setTableName,
   selectAttributeList,
   selectTableName,
+  setAttributeList,
+  setTableID,
+  selectTableID,
 } from '../redux/slices/tableSchemaSlice';
 import { AttributeList } from './AttributeList';
-import { useCreateTableInfoMutation } from '../redux/api/tableSchemaApi';
+import {
+  useCreateTableInfoMutation,
+  useUpdateTableMutation,
+} from '../redux/api/tableSchemaApi';
 import { setError } from '../redux/slices/errorSlice';
+import { TableSchema as TableSchemaType } from '../utils/types';
 
 type Props = {
   onCancelClick: () => void;
+  editMode?: boolean;
+  initialTable?: TableSchemaType | null;
 };
 
 export const TableSchema = (props: Props) => {
-  const { onCancelClick } = props;
+  const { onCancelClick, initialTable, editMode } = props;
 
   const [tableValue, setTableValue] = React.useState<string>('');
   const dispatch = useAppDispatch();
   const attributeListSelector = useAppSelector(selectAttributeList);
   const tableNameSelector = useAppSelector(selectTableName);
+  const tableIDSelector = useAppSelector(selectTableID);
 
   const [createTableInfo] = useCreateTableInfoMutation();
+  const [updateTable] = useUpdateTableMutation();
+
+  React.useEffect(() => {
+    if (editMode && initialTable) {
+      setTableValue(initialTable.name);
+      dispatch(setAttributeList(initialTable.attributeList));
+
+      if (initialTable._id) dispatch(setTableID(initialTable._id));
+    }
+  }, [editMode, initialTable, dispatch]);
 
   const handleBlur: React.FocusEventHandler<HTMLInputElement> = () => {
     const tableName = tableValue.trim();
@@ -36,18 +56,27 @@ export const TableSchema = (props: Props) => {
   const handleConfirm: React.MouseEventHandler<
     HTMLButtonElement
   > = async () => {
-    await createTableInfo({
-      name: tableNameSelector,
-      attributeList: attributeListSelector,
-    })
-      .unwrap()
-      .then(() => {
-        setTableValue('');
+    if (!editMode) {
+      await createTableInfo({
+        name: tableNameSelector,
+        attributeList: attributeListSelector,
       })
-      .catch(() => {
-        dispatch(setError('Не удалось добавить информацию об отношении'));
-      });
-
+        .unwrap()
+        .then(() => setTableValue(''))
+        .catch(() => {
+          dispatch(setError('Не удалось добавить информацию об отношении'));
+        });
+    } else {
+      await updateTable({
+        _id: tableIDSelector,
+        name: tableValue,
+        attributeList: attributeListSelector,
+      })
+        .unwrap()
+        .catch(() =>
+          dispatch(setError('Не удалось обновить информацию об отношении'))
+        );
+    }
     if (typeof onCancelClick === 'function') onCancelClick();
   };
 
