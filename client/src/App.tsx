@@ -16,6 +16,9 @@ import { useNormalizeTableMutation } from './redux/api/tableSchemaApi';
 import { NormalizationResult } from './components/NormalizationResult';
 import { setError } from './redux/slices/errorSlice';
 import { Sidebar } from './components/UI/Sidebar';
+import { VscEdit } from 'react-icons/vsc';
+import { AiOutlineDelete } from 'react-icons/ai';
+import { DeleteTable } from './components/DeleteTable';
 
 function App() {
   const [isTableFormShown, setIsTableFormShown] =
@@ -30,6 +33,8 @@ function App() {
   const [normalizationResult, setNormalizationResult] = React.useState<
     TableSchemaType[] | null
   >(null);
+  const [isEditModalOpen, setEditModalOpen] = React.useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = React.useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -38,6 +43,11 @@ function App() {
   const handleTableFormClose = () => {
     dispatch(clearSchema());
     setIsTableFormShown(false);
+  };
+
+  const handleEditTableFormClose = () => {
+    dispatch(clearSchema());
+    setEditModalOpen(false);
   };
 
   const handleDependenciesFormClose = () => {
@@ -74,10 +84,22 @@ function App() {
       <div className="flex-1 pt-12 px-6 sm:p-6 overflow-y-auto">
         {selectedTable ? (
           <div className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">{selectedTable.name} </h2>
+            <div className="flex flex-col gap-3 md:flex-row justify-between items-center">
+              <span className="flex gap-2 items-center ">
+                <h2 className="text-xl font-semibold">{selectedTable.name}</h2>
+                <VscEdit
+                  className="text-xl cursor-pointer"
+                  type="button"
+                  onClick={() => setEditModalOpen(true)}
+                />
+                <AiOutlineDelete
+                  className="text-xl cursor-pointer"
+                  type="button"
+                  onClick={() => setDeleteModalOpen(true)}
+                />
+              </span>
               {selectedTable.normalized ? (
-                <div className="bg-[#CF881B] text-white px-4 py-2 rounded">
+                <div className="bg-[#CF881B] text-white px-4 py-2 rounded text-center truncate">
                   Отношение нормализовано
                 </div>
               ) : (
@@ -120,6 +142,24 @@ function App() {
           normalizedTables={normalizationResult}
           onClose={handleCloseNormalizationResult}
         />
+      )}
+      {isEditModalOpen && (
+        <Modal label="Редактировать отношение">
+          <TableSchema
+            editMode
+            initialTable={selectedTable}
+            onCancelClick={handleEditTableFormClose}
+          />
+        </Modal>
+      )}
+      {isDeleteModalOpen && (
+        <Modal label="Удаление">
+          <DeleteTable
+            tableInfo={selectedTable}
+            onCancelClick={() => setDeleteModalOpen(false)}
+            onDeleted={() => setSelectedTable(null)}
+          />
+        </Modal>
       )}
     </div>
   );
