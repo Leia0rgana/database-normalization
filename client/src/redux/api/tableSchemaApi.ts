@@ -30,6 +30,24 @@ export const tableSchemaApi = createApi({
       }),
       invalidatesTags: ['TableInfo'],
     }),
+    deleteTable: builder.mutation<void, string>({
+      query: (name: string) => ({
+        url: `/tables/${name}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['TableInfo'],
+    }),
+    updateTable: builder.mutation<TableSchema, TableSchema>({
+      query(data) {
+        const { _id, ...body } = data;
+        return {
+          url: `tables/${_id}`,
+          method: 'PATCH',
+          body,
+        };
+      },
+      invalidatesTags: ['TableInfo'],
+    }),
   }),
 });
 
@@ -37,4 +55,6 @@ export const {
   useGetTableInfosQuery,
   useCreateTableInfoMutation,
   useNormalizeTableMutation,
+  useDeleteTableMutation,
+  useUpdateTableMutation,
 } = tableSchemaApi;
