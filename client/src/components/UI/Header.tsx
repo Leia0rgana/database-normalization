@@ -81,7 +81,7 @@ export const Header = () => {
         <div
           className={`${
             isMenuOpen ? 'flex' : 'hidden '
-          } sm:flex flex-col items-center absolute top-16 right-0 z-100000 bg-gray-100 rounded-lg p-4 shadow-lg sm:shadow-none sm:rounded-none sm:p-0 sm:bg-transparent sm:static sm:flex-row sm:justify-end sm:items-center gap-2 sm:gap-9 font-medium`}
+          } sm:flex flex-col items-center absolute top-16 right-0 z-100000 bg-gray-100 rounded-lg p-4 shadow-lg sm:shadow-none sm:rounded-none sm:p-0 sm:bg-transparent sm:static sm:z-0 sm:flex-row sm:justify-end sm:items-center gap-2 sm:gap-9 font-medium`}
           ref={menuRef}
         >
           <NavLink
