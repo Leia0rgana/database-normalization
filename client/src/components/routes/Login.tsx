@@ -7,7 +7,7 @@ import {
 } from '../../redux/api/userApi';
 import { useLocation, useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { setError } from '../../redux/slices/errorSlice';
+import { setError } from '../../redux/slices/messageSlice';
 
 export const Login = () => {
   const [mode, setMode] = React.useState<'Зарегистрироваться' | 'Войти'>(

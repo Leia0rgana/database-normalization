@@ -18,7 +18,7 @@ import {
   FunctionalDependencyState,
 } from '../utils/types';
 import { DependenciesList } from './DependenciesList';
-import { setError } from '../redux/slices/errorSlice';
+import { setError } from '../redux/slices/messageSlice';
 import { ImSpinner2 } from 'react-icons/im';
 
 type Props = {
@@ -29,7 +29,6 @@ type Props = {
 };
 
 export const FunctionalDependencies = (props: Props) => {
-  // TODO split into several components
   const { onCancelClick, editMode, tableName, initialDependencies } = props;
 
   const [selectedTable, setSelectedTable] = React.useState<string>('');

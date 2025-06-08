@@ -5,7 +5,7 @@ import userReducer from './slices/userSlice';
 import { tableSchemaApi } from './api/tableSchemaApi';
 import { functionalDependenciesApi } from './api/functionalDependenciesApi';
 import { userApi } from './api/userApi';
-import errorReducer from './slices/errorSlice';
+import messageReducer from './slices/messageSlice';
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +15,7 @@ export const store = configureStore({
     tableSchema: tableSchemaReducer,
     functionalDependencies: functionalDependenciesReducer,
     user: userReducer,
-    error: errorReducer,
+    message: messageReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(

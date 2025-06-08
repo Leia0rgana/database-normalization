@@ -3,7 +3,7 @@ import { useGetFunctionalDependenciesQuery } from '../redux/api/functionalDepend
 import { FunctionalDependency, TableSchema } from '../utils/types';
 import { ImSpinner2 } from 'react-icons/im';
 import { useAppDispatch } from '../redux/hooks';
-import { setError } from '../redux/slices/errorSlice';
+import { setError } from '../redux/slices/messageSlice';
 import { Modal } from './UI/Modal';
 import { FunctionalDependencies } from './FunctionalDependencies';
 import { VscEdit } from 'react-icons/vsc';

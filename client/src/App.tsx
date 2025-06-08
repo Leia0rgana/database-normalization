@@ -12,7 +12,7 @@ import { Modal } from './components/UI/Modal';
 import { TableDependecies } from './components/TableDependecies';
 import { useNormalizeTableMutation } from './redux/api/tableSchemaApi';
 import { NormalizationResult } from './components/NormalizationResult';
-import { setError } from './redux/slices/errorSlice';
+import { setError, setInfo } from './redux/slices/messageSlice';
 import { Sidebar } from './components/UI/Sidebar';
 import { VscEdit } from 'react-icons/vsc';
 import { AiOutlineDelete } from 'react-icons/ai';
@@ -42,7 +42,13 @@ function App() {
     if (selectedTable) {
       try {
         const result = await normalizeTable(selectedTable).unwrap();
-        setNormalizationResult(result);
+
+        if (result.length > 1) setNormalizationResult(result);
+        else {
+          setNormalizationResult(null);
+          dispatch(setInfo('Отношение уже нормализовано'));
+        }
+
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         dispatch(setError('Не удалось нормализовать отношение'));
@@ -51,7 +57,7 @@ function App() {
   };
 
   return (
-    <div className=" relative flex h-[85vh]">
+    <div className="flex h-[85vh]">
       <Sidebar
         isTableFormShown={isTableFormShown}
         isDependenciesFormShown={isDependenciesFormShown}

@@ -7,7 +7,7 @@ import {
 import { TableDropdown } from './TableDropdown';
 import { ForeignKeyReference } from '../utils/types';
 import { VscKey } from 'react-icons/vsc';
-import { setError } from '../redux/slices/errorSlice';
+import { setError } from '../redux/slices/messageSlice';
 
 export const AttributeForm = () => {
   const [name, setName] = React.useState<string>('');

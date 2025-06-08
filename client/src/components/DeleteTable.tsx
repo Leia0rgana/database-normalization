@@ -1,6 +1,6 @@
 import { useDeleteTableMutation } from '../redux/api/tableSchemaApi';
 import { useAppDispatch } from '../redux/hooks';
-import { setError } from '../redux/slices/errorSlice';
+import { setError } from '../redux/slices/messageSlice';
 import { TableSchema } from '../utils/types';
 
 type Props = {

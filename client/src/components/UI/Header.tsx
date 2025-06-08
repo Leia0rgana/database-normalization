@@ -11,10 +11,11 @@ import {
   selectUser,
   setUserData,
 } from '../../redux/slices/userSlice';
-import { setError } from '../../redux/slices/errorSlice';
+import { setError } from '../../redux/slices/messageSlice';
 import { ErrorNotification } from './ErrorNotification';
 import { MdMenu } from 'react-icons/md';
 import { useClickOutside } from '../../hooks/useClickOutside';
+import { InfoNotification } from './InfoNotification';
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -66,6 +67,7 @@ export const Header = () => {
   return (
     <>
       <ErrorNotification />
+      <InfoNotification />
       <div className="flex items-center justify-between border-b-[1px] border-[#E5E8EB] text-[#252b35] py-5">
         <NavLink
           to="/"
@@ -109,7 +111,7 @@ export const Header = () => {
                   isUserMenuOpen ? 'block' : 'hidden '
                 }`}
               >
-                <ul className="bg-gray-100  rounded-xl p-2">
+                <ul className="bg-gray-100 rounded-xl p-2">
                   <li className="p-2 hover:bg-gray-200 rounded-xl">
                     <Link to="/normalization">Нормализация</Link>
                   </li>

@@ -2,18 +2,18 @@ import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { clearError, selectError } from '../../redux/slices/messageSlice';
+import { clearInfo, selectInfo } from '../../redux/slices/messageSlice';
 
-export const ErrorNotification = () => {
-  const errorMessage = useAppSelector(selectError);
+export const InfoNotification = () => {
+  const infoMessage = useAppSelector(selectInfo);
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
-    if (errorMessage) {
-      toast.error(errorMessage);
-      dispatch(clearError());
+    if (infoMessage) {
+      toast.info(infoMessage);
+      dispatch(clearInfo());
     }
-  }, [errorMessage, dispatch]);
+  }, [infoMessage, dispatch]);
 
   return (
     <ToastContainer

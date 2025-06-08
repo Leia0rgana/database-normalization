@@ -15,7 +15,7 @@ import {
   useCreateTableInfoMutation,
   useUpdateTableMutation,
 } from '../redux/api/tableSchemaApi';
-import { setError } from '../redux/slices/errorSlice';
+import { setError } from '../redux/slices/messageSlice';
 import { TableSchema as TableSchemaType } from '../utils/types';
 
 type Props = {

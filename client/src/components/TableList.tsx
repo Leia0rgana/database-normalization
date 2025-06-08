@@ -3,7 +3,7 @@ import { useGetTableInfosQuery } from '../redux/api/tableSchemaApi';
 import { TableInList } from './TableInList';
 import { ImSpinner2 } from 'react-icons/im';
 import { useDispatch } from 'react-redux';
-import { setError } from '../redux/slices/errorSlice';
+import { setError } from '../redux/slices/messageSlice';
 import { TableSchema } from '../utils/types';
 
 type TableListProps = {
