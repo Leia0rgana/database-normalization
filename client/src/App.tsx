@@ -6,9 +6,7 @@ import {
 } from './utils/types';
 import { TableSchema } from './components/TableSchema';
 import { useAppDispatch } from './redux/hooks';
-import { clearSchema } from './redux/slices/tableSchemaSlice';
 import { FunctionalDependencies } from './components/FunctionalDependencies';
-import { clearFunctionalDependencies } from './redux/slices/functionalDependenciesSlice';
 import { TableAttributes } from './components/TableAttributes';
 import { Modal } from './components/UI/Modal';
 import { TableDependecies } from './components/TableDependecies';
@@ -40,21 +38,6 @@ function App() {
 
   const [normalizeTable, { isLoading }] = useNormalizeTableMutation();
 
-  const handleTableFormClose = () => {
-    dispatch(clearSchema());
-    setIsTableFormShown(false);
-  };
-
-  const handleEditTableFormClose = () => {
-    dispatch(clearSchema());
-    setEditModalOpen(false);
-  };
-
-  const handleDependenciesFormClose = () => {
-    dispatch(clearFunctionalDependencies());
-    setIsDependenciesFormShown(false);
-  };
-
   const handleNormalize = async () => {
     if (selectedTable) {
       try {
@@ -65,10 +48,6 @@ function App() {
         dispatch(setError('Не удалось нормализовать отношение'));
       }
     }
-  };
-
-  const handleCloseNormalizationResult = () => {
-    setNormalizationResult(null);
   };
 
   return (
@@ -88,12 +67,12 @@ function App() {
               <span className="flex gap-2 items-center ">
                 <h2 className="text-xl font-semibold">{selectedTable.name}</h2>
                 <VscEdit
-                  className="text-xl cursor-pointer"
+                  className="text-xl cursor-pointer text-gray-500 hover:scale-120 transition-all ease-in-out duration-200"
                   type="button"
                   onClick={() => setEditModalOpen(true)}
                 />
                 <AiOutlineDelete
-                  className="text-xl cursor-pointer"
+                  className="text-xl cursor-pointer text-gray-500 hover:scale-120 transition-all ease-in-out duration-200"
                   type="button"
                   onClick={() => setDeleteModalOpen(true)}
                 />
@@ -128,19 +107,23 @@ function App() {
       </div>
       {isTableFormShown && (
         <Modal label="Новое отношение">
-          <TableSchema onCancelClick={handleTableFormClose} />
+          <TableSchema onCancelClick={() => setIsTableFormShown(false)} />
         </Modal>
       )}
       {isDependenciesFormShown && (
         <Modal label="Функциональные зависимости">
-          <FunctionalDependencies onCancelClick={handleDependenciesFormClose} />
+          <FunctionalDependencies
+            onCancelClick={() => {
+              setIsDependenciesFormShown(false);
+            }}
+          />
         </Modal>
       )}
       {normalizationResult && selectedTable && (
         <NormalizationResult
           originalTable={selectedTable}
           normalizedTables={normalizationResult}
-          onClose={handleCloseNormalizationResult}
+          onClose={() => setNormalizationResult(null)}
         />
       )}
       {isEditModalOpen && (
@@ -148,7 +131,7 @@ function App() {
           <TableSchema
             editMode
             initialTable={selectedTable}
-            onCancelClick={handleEditTableFormClose}
+            onCancelClick={() => setEditModalOpen(false)}
           />
         </Modal>
       )}

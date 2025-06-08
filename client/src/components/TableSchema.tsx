@@ -8,6 +8,7 @@ import {
   setAttributeList,
   setTableID,
   selectTableID,
+  clearSchema,
 } from '../redux/slices/tableSchemaSlice';
 import { AttributeList } from './AttributeList';
 import {
@@ -36,6 +37,7 @@ export const TableSchema = (props: Props) => {
   const [updateTable] = useUpdateTableMutation();
 
   React.useEffect(() => {
+    dispatch(clearSchema());
     if (editMode && initialTable) {
       setTableValue(initialTable.name);
       dispatch(setAttributeList(initialTable.attributeList));
@@ -77,7 +79,9 @@ export const TableSchema = (props: Props) => {
           dispatch(setError('Не удалось обновить информацию об отношении'))
         );
     }
-    if (typeof onCancelClick === 'function') onCancelClick();
+
+    dispatch(clearSchema());
+    if (onCancelClick) onCancelClick();
   };
 
   return (
