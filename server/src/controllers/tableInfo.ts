@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import TableInfoModel from '../models/tableInfo';
 import { FunctionalDependencyState, TableInfo } from '../utils/types';
-import { normalizeTo2NF } from '../algorithm/normalizeTableToSecondForm';
+import { normalizeTo3NF } from '../algorithm/normalizeTable';
 
 //get table list
 export const getTableList = async (req: Request, res: Response) => {
@@ -55,7 +55,7 @@ export const addDependenciesToTables = async (req: Request, res: Response) => {
             },
           },
         },
-        { new: true } // возврат обновленного документа
+        { new: true }
       )
     );
 
@@ -116,21 +116,35 @@ export const normalizeTable = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Table not found' });
     }
 
-    const normalizedTables = await normalizeTo2NF(
+    const normalizedTables = await normalizeTo3NF(
       table as unknown as TableInfo
     );
 
-    const savedTables = await Promise.all(
-      normalizedTables.map(async (newTable) => {
-        return await TableInfoModel.create({
-          ...newTable,
-          user: userId,
-          originalTableName: table.name,
-        });
-      })
-    );
+    if (normalizedTables.length > 1) {
+      const savedTables = await Promise.all(
+        normalizedTables.map(async (newTable) => {
+          return await TableInfoModel.create({
+            ...newTable,
+            user: userId,
+            originalTableName: table.name,
+          });
+        })
+      );
+      res.status(200).json(savedTables);
+    } else {
+      await TableInfoModel.findOneAndUpdate(
+        {
+          name: normalizedTables[0].name,
+        },
+        {
+          $set: {
+            normalized: true,
+          },
+        }
+      );
 
-    res.status(200).json(savedTables);
+      res.status(200).json({ info: 'No normalization nedeed' });
+    }
   } catch (error) {
     console.error('Error normalizing table:', error);
     res.status(500).json({ error: 'Failed to normalize table' });
