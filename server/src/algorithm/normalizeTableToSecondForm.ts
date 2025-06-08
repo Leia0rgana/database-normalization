@@ -18,7 +18,7 @@ export const normalizeTo2NF = async (
   const partialDependencies = findPartialDependencies(originalTableCopy);
 
   if (partialDependencies.length === 0) {
-    return resultTables;
+    return [originalTable];
   }
 
   for (const pd of partialDependencies) {
@@ -40,7 +40,7 @@ export const normalizeTo2NF = async (
       addForeignKeyReference(
         originalTableCopy,
         pd.determinant,
-        existingTable.name!
+        existingTable.name
       );
       removeAttributesFromTable(originalTableCopy, pd.dependent);
       removeFunctionalDependency(originalTableCopy, pd);

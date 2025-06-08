@@ -29,7 +29,7 @@ export const Sidebar = (props: Props) => {
       <MdOutlineKeyboardDoubleArrowRight
         className={`${isSidebarOpen ? 'rotate-180 right-0' : 'left-2'} ${
           isTableFormShown || isDependenciesFormShown ? 'hidden' : ''
-        } absolute top-4 z-99999 sm:hidden w-7 h-7 cursor-pointer`}
+        } absolute top-26 z-99999 sm:hidden w-7 h-7 cursor-pointer`}
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       />
       <div
