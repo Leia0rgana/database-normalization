@@ -4,23 +4,33 @@ import {
   addFunctionalDependency,
   clearFunctionalDependencies,
   selectFunctionalDependencies,
-  type FunctionalDependency,
+  setFunctionalDependencies,
 } from '../redux/slices/functionalDependenciesSlice';
 import { useGetTableInfosQuery } from '../redux/api/tableSchemaApi';
-import { useAddFunctionalDependenciesMutation } from '../redux/api/functionalDependenciesApi';
+import {
+  useAddFunctionalDependenciesMutation,
+  useUpdateFunctionalDependenciesMutation,
+} from '../redux/api/functionalDependenciesApi';
 import { AttributesInFD } from './AttributesInFD';
-import { Attribute } from '../utils/types';
+import {
+  Attribute,
+  FunctionalDependency,
+  FunctionalDependencyState,
+} from '../utils/types';
 import { DependenciesList } from './DependenciesList';
 import { setError } from '../redux/slices/errorSlice';
 import { ImSpinner2 } from 'react-icons/im';
 
 type Props = {
   onCancelClick: () => void;
+  editMode?: boolean;
+  tableName?: string;
+  initialDependencies?: FunctionalDependency[];
 };
 
 export const FunctionalDependencies = (props: Props) => {
   // TODO split into several components
-  const { onCancelClick } = props;
+  const { onCancelClick, editMode, tableName, initialDependencies } = props;
 
   const [selectedTable, setSelectedTable] = React.useState<string>('');
   const [selectedDeterminant, setSelectedDeterminant] = React.useState<
@@ -35,12 +45,32 @@ export const FunctionalDependencies = (props: Props) => {
 
   const { data: tables = [], isLoading, isError } = useGetTableInfosQuery();
   const [addFDs] = useAddFunctionalDependenciesMutation();
+  const [updateFDs] = useUpdateFunctionalDependenciesMutation();
 
   React.useEffect(() => {
     if (isError) {
       dispatch(setError('Не удалось получить данные об отношениях'));
     }
   }, [dispatch, isError]);
+
+  React.useEffect(() => {
+    dispatch(clearFunctionalDependencies());
+    if (editMode && initialDependencies) {
+      if (tableName) {
+        const dependencies = initialDependencies.map((dep) => {
+          return {
+            id: String(1234 + Math.random() * 99999),
+            determinant: dep.determinant,
+            dependent: dep.dependent,
+            tableName: tableName,
+          };
+        });
+
+        dispatch(setFunctionalDependencies(dependencies));
+        setSelectedTable(tableName || '');
+      }
+    }
+  }, [editMode, initialDependencies, tableName, dispatch]);
 
   const selectedTableAttributes = React.useMemo(() => {
     if (!selectedTable) return [];
@@ -63,7 +93,7 @@ export const FunctionalDependencies = (props: Props) => {
         (attribute) => attribute.name
       );
 
-      const newFD: FunctionalDependency = {
+      const newFD: FunctionalDependencyState = {
         id: String(1234 + Math.random() * 99999),
         determinant: selectedDeterminantNames,
         dependent: selectedDependentNames,
@@ -78,13 +108,23 @@ export const FunctionalDependencies = (props: Props) => {
   };
 
   const handleConfirm = async () => {
-    await addFDs(dependenciesSelector)
-      .unwrap()
-      .then(() => dispatch(clearFunctionalDependencies()))
-      .catch(() => {
-        dispatch(setError('Не удалось сохранить функциональные зависимости'));
-      });
-
+    if (editMode && tableName) {
+      await updateFDs({
+        tableName,
+        functionalDependencies: dependenciesSelector,
+      })
+        .unwrap()
+        .catch(() => {
+          dispatch(setError('Не удалось обновить функциональные зависимости'));
+        });
+    } else {
+      await addFDs(dependenciesSelector)
+        .unwrap()
+        .catch(() => {
+          dispatch(setError('Не удалось сохранить функциональные зависимости'));
+        });
+    }
+    dispatch(clearFunctionalDependencies());
     if (onCancelClick) onCancelClick();
   };
 
@@ -100,7 +140,7 @@ export const FunctionalDependencies = (props: Props) => {
               id="tableSelect"
               value={selectedTable}
               onChange={(e) => setSelectedTable(e.target.value)}
-              disabled={isLoading}
+              disabled={isLoading || editMode}
               className="px-3 py-2 border border-gray-300 rounded bg-white"
             >
               <>
@@ -147,7 +187,7 @@ export const FunctionalDependencies = (props: Props) => {
       <span className="flex justify-center sm:justify-start gap-3 mt-5">
         <button
           onClick={handleConfirm}
-          disabled={dependenciesSelector.length === 0}
+          disabled={!editMode && dependenciesSelector.length === 0}
           className="btn-primary"
         >
           OK

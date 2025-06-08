@@ -4,6 +4,9 @@ import { FunctionalDependency, TableSchema } from '../utils/types';
 import { ImSpinner2 } from 'react-icons/im';
 import { useAppDispatch } from '../redux/hooks';
 import { setError } from '../redux/slices/errorSlice';
+import { Modal } from './UI/Modal';
+import { FunctionalDependencies } from './FunctionalDependencies';
+import { VscEdit } from 'react-icons/vsc';
 
 type TableDependeciesProps = {
   tableInfo: TableSchema;
@@ -16,6 +19,8 @@ export const TableDependecies = (props: TableDependeciesProps) => {
 
   const { data, isLoading, isFetching, isError } =
     useGetFunctionalDependenciesQuery(tableInfo.name);
+
+  const [isEditModalOpen, setEditModalOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (data) {
@@ -30,7 +35,14 @@ export const TableDependecies = (props: TableDependeciesProps) => {
 
   return (
     <div className="space-y-2">
-      <h3 className="text-lg font-semibold">Функциональные зависимости:</h3>
+      <div className="flex items-center gap-2">
+        <h3 className="text-lg font-semibold">Функциональные зависимости</h3>
+        <VscEdit
+          className="text-xl cursor-pointer text-gray-500 hover:scale-120 transition-all ease-in-out duration-200"
+          type="button"
+          onClick={() => setEditModalOpen(true)}
+        />
+      </div>
       {(isLoading || isFetching) && (
         <ImSpinner2 className="spinner self-center p-2 m-2" />
       )}
@@ -43,6 +55,16 @@ export const TableDependecies = (props: TableDependeciesProps) => {
           <span>{dependency.dependent.join(', ')}</span>
         </div>
       ))}
+      {isEditModalOpen && data && (
+        <Modal label="Редактировать функциональные зависимости">
+          <FunctionalDependencies
+            editMode
+            tableName={tableInfo.name}
+            initialDependencies={data}
+            onCancelClick={() => setEditModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 };
