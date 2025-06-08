@@ -1,3 +1,4 @@
+import tableInfo from '../models/tableInfo';
 import { TableInfo, FunctionalDependency } from './types';
 
 export const deepCopyTable = (table: TableInfo, suffix: string): TableInfo => {
@@ -15,6 +16,10 @@ export const getPrimaryKey = (table: TableInfo): string[] =>
   table.attributeList
     .filter((attr) => attr.isPrimaryKey)
     .map((attr) => attr.name);
+
+export const isKey = (attributes: string[], primaryKey: string[]) =>
+  attributes.length === primaryKey.length &&
+  attributes.every((d) => primaryKey.includes(d));
 
 export const isStrictSubset = (
   subset: string[],
@@ -123,4 +128,59 @@ export const removeFunctionalDependency = (
           JSON.stringify(fdToRemove.dependent.sort())
       )
   );
+};
+
+export const findTransitiveDependencies = (table: TableInfo) => {
+  const primaryKey = getPrimaryKey(table);
+  const fds = table.functionalDependencies || [];
+
+  return fds.filter((fd) => {
+    const determinantIsKey = isKey(fd.determinant, primaryKey);
+    const determinantIsStrictSubset = isStrictSubset(
+      fd.determinant,
+      primaryKey
+    );
+    const dependentIsNonKey = fd.dependent.every(
+      (d) => !primaryKey.includes(d)
+    );
+    return !determinantIsKey && !determinantIsStrictSubset && dependentIsNonKey;
+  });
+};
+
+export const dependencyExtraction = async (
+  originalTable: TableInfo,
+  dependencyToExtract: FunctionalDependency,
+  resultTables: TableInfo[]
+): Promise<void> => {
+  const query = {
+    'attributeList.name': { $all: dependencyToExtract.determinant },
+    'attributeList.isPrimaryKey': true,
+    attributeList: { $size: dependencyToExtract.determinant.length },
+    user: originalTable.user,
+  };
+
+  const existingTable = await tableInfo.findOne(query);
+  let newOrExistingTable: TableInfo;
+
+  if (existingTable) {
+    newOrExistingTable = existingTable as unknown as TableInfo;
+
+    if (!resultTables.some((t) => t.name === newOrExistingTable.name)) {
+      resultTables.push(newOrExistingTable);
+    }
+  } else {
+    newOrExistingTable = createTableFromDependency(
+      originalTable,
+      dependencyToExtract
+    );
+    resultTables.push(newOrExistingTable);
+  }
+
+  addForeignKeyReference(
+    originalTable,
+    dependencyToExtract.determinant,
+    newOrExistingTable.name
+  );
+  removeAttributesFromTable(originalTable, dependencyToExtract.dependent);
+  removeFunctionalDependency(originalTable, dependencyToExtract);
 };
