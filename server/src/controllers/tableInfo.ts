@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import TableInfoModel from '../models/tableInfo';
 import { FunctionalDependencyState, TableInfo } from '../utils/types';
-import { normalizeTo3NF } from '../algorithm/normalizeTable';
+import { normalizeTo3NF } from '../algorithm/normalizeTableTo3NF';
 
 //get table list
 export const getTableList = async (req: Request, res: Response) => {
