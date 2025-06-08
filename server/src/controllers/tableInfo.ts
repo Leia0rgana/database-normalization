@@ -36,7 +36,14 @@ export const addTable = async (req: Request, res: Response) => {
 export const addDependenciesToTables = async (req: Request, res: Response) => {
   try {
     const dependencies: FunctionalDependencyState[] = req.body;
+    const userId = req.body;
 
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        error: 'User must be authenticated',
+      });
+    }
     const updatePromises = dependencies.map((dependency) =>
       TableInfoModel.findOneAndUpdate(
         { name: dependency.tableName },
@@ -63,6 +70,14 @@ export const addDependenciesToTables = async (req: Request, res: Response) => {
 export const getTableDependeciesList = async (req: Request, res: Response) => {
   try {
     const { name } = req.params;
+    const userId = req.body.userId;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        error: 'User must be authenticated',
+      });
+    }
 
     if (!name) {
       return res.status(400).json({ error: 'Table name is required' });
@@ -201,5 +216,52 @@ export const updateTable = async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error updating table:', error);
     res.status(500).json({ error: 'Failed to update table' });
+  }
+};
+
+export const updateTableDependeciesList = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { name } = req.params;
+    const { userId, functionalDependencies } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({
+        error: 'User must be authenticated to update',
+      });
+    }
+
+    if (!name || !functionalDependencies) {
+      return res.status(400).json({ error: 'Missing details' });
+    }
+
+    const updatedTable = await TableInfoModel.findOneAndUpdate(
+      {
+        name: name,
+        user: userId,
+      },
+      {
+        $set: {
+          functionalDependencies: functionalDependencies,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!updatedTable) {
+      return res.status(404).json({
+        error: 'Table to update FDs not found for this user',
+      });
+    }
+
+    res.status(200).json(updatedTable);
+  } catch (error) {
+    console.error('Error updating table FDs:', error);
+    res.status(500).json({ error: 'Failed to update table FDs' });
   }
 };

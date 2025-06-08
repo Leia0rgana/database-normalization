@@ -34,6 +34,12 @@ export const functionalDependenciesSlice = createSlice({
     clearFunctionalDependencies: (state) => {
       state.dependencies = [];
     },
+    setFunctionalDependencies: (
+      state,
+      action: PayloadAction<FunctionalDependency[]>
+    ) => {
+      state.dependencies = action.payload;
+    },
   },
 });
 
@@ -41,6 +47,7 @@ export const {
   addFunctionalDependency,
   removeFunctionalDependency,
   clearFunctionalDependencies,
+  setFunctionalDependencies,
 } = functionalDependenciesSlice.actions;
 
 export const selectFunctionalDependencies = (state: RootState) =>
