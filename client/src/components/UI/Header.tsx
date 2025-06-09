@@ -1,16 +1,8 @@
 import { Link, NavLink, useNavigate } from 'react-router';
-import {
-  useGetIsUserAuthQuery,
-  useGetUserDataQuery,
-  useLogoutUserMutation,
-} from '../../redux/api/userApi';
+import { useLogoutUserMutation } from '../../redux/api/userApi';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import {
-  clearUser,
-  selectUser,
-  setUserData,
-} from '../../redux/slices/userSlice';
+import { clearUser, selectUser } from '../../redux/slices/userSlice';
 import { setError } from '../../redux/slices/messageSlice';
 import { ErrorNotification } from './ErrorNotification';
 import { MdMenu } from 'react-icons/md';
@@ -34,23 +26,7 @@ export const Header = () => {
   const userDataSelector = useAppSelector(selectUser);
   const navigate = useNavigate();
 
-  const {
-    data: authStatus,
-    isLoading: isAuthLoading,
-    isFetching: isAuthFetching,
-  } = useGetIsUserAuthQuery();
-
-  const { data: userDataResponse } = useGetUserDataQuery(undefined, {
-    skip: isAuthLoading || isAuthFetching || !authStatus?.success,
-  });
-
   const [logout] = useLogoutUserMutation();
-
-  React.useEffect(() => {
-    if (userDataResponse?.success) {
-      dispatch(setUserData(userDataResponse.userData));
-    }
-  }, [dispatch, userDataResponse]);
 
   const handleLogout = async () => {
     await logout()
@@ -113,7 +89,11 @@ export const Header = () => {
               >
                 <ul className="bg-gray-100 rounded-xl p-2">
                   <li className="p-2 hover:bg-gray-200 rounded-xl">
-                    <Link to="/normalization">Нормализация</Link>
+                    {userDataSelector.role === 'user' ? (
+                      <Link to="/normalization">Нормализация</Link>
+                    ) : (
+                      <Link to="/admin-dashboard">Пользователи</Link>
+                    )}
                   </li>
                   <li
                     className="py-1 px-2 hover:bg-gray-200 rounded-xl"

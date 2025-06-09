@@ -9,6 +9,8 @@ import { MainLayout } from './components/routes/MainLayout';
 import { Home } from './components/routes/Home';
 import { Login } from './components/routes/Login';
 import { ProtectedRoute } from './components/routes/ProtectedRoute';
+import { AdminDashboard } from './components/routes/AdminDashboard.tsx';
+import { ForbiddenPage } from './components/routes/ForbiddenPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +32,18 @@ const router = createBrowserRouter([
             <App />{' '}
           </ProtectedRoute>
         ),
+      },
+      {
+        path: '/admin-dashboard',
+        element: (
+          <ProtectedRoute isAdminRoute={true}>
+            <AdminDashboard />{' '}
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/forbidden',
+        element: <ForbiddenPage />,
       },
       {
         path: '*',
