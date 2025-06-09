@@ -13,6 +13,7 @@ if (!JWT_SECRET) {
   console.error('JWT_SECRET is not set');
   process.exit(1);
 }
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
 export const signUp = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
@@ -31,10 +32,22 @@ export const signUp = async (req: Request, res: Response) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new userModel({ name, email, password: hashedPassword });
+
+    let userRole: 'user' | 'admin' = 'user';
+    if (ADMIN_EMAIL && email === ADMIN_EMAIL) {
+      userRole = 'admin';
+    }
+
+    const user = new userModel({
+      name,
+      email,
+      password: hashedPassword,
+      role: userRole,
+    });
+
     await user.save();
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, {
+    const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, {
       expiresIn: '7d',
     });
 
@@ -81,7 +94,7 @@ export const login = async (req: Request, res: Response) => {
         .json({ success: false, message: 'Invalid email or password' });
     }
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, {
+    const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, {
       expiresIn: '7d',
     });
 
@@ -100,89 +113,6 @@ export const logout = async (req: Request, res: Response) => {
     return res.status(200).json({ success: true, message: 'Logged out' });
   } catch (error: any) {
     console.error('Error in logout:', error);
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-export const sendVerifyOtp = async (req: Request, res: Response) => {
-  try {
-    const { userId } = req.body;
-
-    const user = await userModel.findById(userId);
-
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: 'User not found' });
-    }
-
-    if (user.isAccountVerified) {
-      return res
-        .status(400)
-        .json({ success: false, message: 'Account already verified' });
-    }
-
-    const otp = String(Math.floor(100000 + Math.random() * 900000));
-
-    user.verifyOtp = otp;
-    user.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
-
-    await user.save();
-
-    const mailOptions = {
-      from: process.env.SENDER_EMAIL,
-      to: user.email!,
-      subject: 'Подтверждение аккаунта | DBNormalization',
-      text: `Ваш код для подтверждения аккаунта: ${otp}. Код действителен 24 часа.`,
-    };
-
-    await transporter.sendMail(mailOptions);
-    return res.status(200).json({ success: true, message: 'Otp sent' });
-  } catch (error: any) {
-    console.error('Error in sendVerifyOtp:', error);
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-export const verifyEmail = async (req: Request, res: Response) => {
-  const { userId, otp } = req.body;
-
-  if (!userId || !otp) {
-    return res.status(400).json({ success: false, message: 'Missing details' });
-  }
-
-  try {
-    const user = await userModel.findById(userId);
-
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: 'User not found' });
-    }
-
-    if (user.verifyOtp === '' || user.verifyOtp !== otp) {
-      return res
-        .status(400)
-        .json({ success: false, message: 'Invalid verification code' });
-    }
-
-    if (user.verifyOtpExpireAt < Date.now()) {
-      return res
-        .status(400)
-        .json({ success: false, message: 'Verification code expired' });
-    }
-
-    user.isAccountVerified = true;
-    user.verifyOtp = '';
-    user.verifyOtpExpireAt = 0;
-
-    await user.save();
-
-    return res
-      .status(200)
-      .json({ success: true, message: 'Successful email verification' });
-  } catch (error: any) {
-    console.error('Error in verifyEmail:', error);
     return res.status(500).json({ success: false, message: error.message });
   }
 };
