@@ -6,13 +6,21 @@ type UserResponse = {
   userData: UserData;
 };
 
+export type UserInfoByAdmin = {
+  _id?: string;
+  name: string;
+  email: string;
+  password: string;
+  role?: 'user' | 'admin';
+};
+
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: 'include',
   }),
-  tagTypes: ['Auth', 'TableInfo'],
+  tagTypes: ['Auth', 'TableInfo', 'Users'],
   endpoints: (builder) => ({
     createUser: builder.mutation<void, User>({
       query: (body) => ({
@@ -46,6 +54,28 @@ export const userApi = createApi({
       query: () => '/auth/is-auth',
       providesTags: ['Auth', 'TableInfo'],
     }),
+    getUsersByAdminRole: builder.query<UserInfoByAdmin[], void>({
+      query: () => '/admin/users',
+      providesTags: ['Users'],
+    }),
+    deleteUserByAdminRole: builder.mutation<void, string>({
+      query: (id: string) => ({
+        url: `/admin/users/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Users'],
+    }),
+    updateUserByAdminRole: builder.mutation<UserInfoByAdmin, UserInfoByAdmin>({
+      query(data) {
+        const { _id, ...body } = data;
+        return {
+          url: `/admin/users/${_id}`,
+          method: 'PATCH',
+          body,
+        };
+      },
+      invalidatesTags: ['Users'],
+    }),
   }),
 });
 
@@ -55,4 +85,7 @@ export const {
   useLogoutUserMutation,
   useGetUserDataQuery,
   useGetIsUserAuthQuery,
+  useGetUsersByAdminRoleQuery,
+  useDeleteUserByAdminRoleMutation,
+  useUpdateUserByAdminRoleMutation,
 } = userApi;

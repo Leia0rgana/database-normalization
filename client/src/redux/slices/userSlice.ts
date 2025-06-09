@@ -8,8 +8,8 @@ interface UserState {
 
 const initialState: UserState = {
   userData: {
-    isAccountVerified: false,
     name: '',
+    role: 'user',
   },
 };
 
