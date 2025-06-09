@@ -37,7 +37,7 @@ export type User = {
 
 export type UserData = {
   name: string;
-  isAccountVerified?: boolean;
+  role: 'user' | 'admin';
 };
 
 export type Response = {

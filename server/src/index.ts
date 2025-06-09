@@ -7,6 +7,7 @@ import { authRouter } from './routes/auth';
 import { tableInfoRouter } from './routes/tableInfo';
 import { connectToDB } from './config/mongodb';
 import { userRouter } from './routes/user';
+import { adminRouter } from './routes/admin';
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -32,3 +33,4 @@ connectToDB();
 app.use('/auth', authRouter);
 app.use('/tables', tableInfoRouter);
 app.use('/user', userRouter);
+app.use('/admin', adminRouter);

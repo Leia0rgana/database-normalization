@@ -4,11 +4,11 @@ const user = new Schema({
   name: { type: String, require },
   email: { type: String, require, unique: true },
   password: { type: String, require },
-  verifyOtp: { type: String, default: '' },
-  verifyOtpExpireAt: { type: Number, default: 0 },
-  isAccountVerified: { type: Boolean, default: false },
-  resetOtp: { type: String, default: '' },
-  resetOtpExpireAT: { type: Number, default: 0 },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user',
+  },
 });
 
 type User = InferSchemaType<typeof user>;
