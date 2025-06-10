@@ -32,7 +32,7 @@ export const TableDropdown = (props: TableDropdownProps) => {
   return (
     <div className="relative flex gap-1" ref={dropdownRef}>
       <button
-        className="flex items-center justify-between gap-1.5 w-[200px] min-h-[21px] px-3 py-2 bg-white border border-gray-200 rounded after:content-[''] after:border-solid after:border-grey after:border-r-2 after:border-b-2 after:inline-block after:p-0.5 after:rotate-45"
+        className="flex items-center truncate overflow-x-auto justify-between gap-1.5 w-[200px] min-h-[21px] px-3 py-2 bg-white border border-gray-200 rounded after:content-[''] after:border-solid after:border-grey after:border-r-2 after:border-b-2 after:inline-block after:p-0.5 after:rotate-45"
         onClick={() => setIsOpen((prev) => !prev)}
         type="button"
       >

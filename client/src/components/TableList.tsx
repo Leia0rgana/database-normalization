@@ -49,7 +49,7 @@ export const TableList = (props: TableListProps) => {
     <ul
       className={
         isDropdown
-          ? 'absolute z-100 top-full left-0 flex flex-col min-w-[200px] bg-white border border-gray-400 rounded'
+          ? 'absolute z-100 top-full left-0 flex flex-col min-w-[200px] max-h-70 overflow-y-auto overflow-x-visible bg-white border border-gray-400 rounded'
           : 'flex flex-col'
       }
     >

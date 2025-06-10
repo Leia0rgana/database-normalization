@@ -26,7 +26,7 @@ export const TableInList = (props: TableProps) => {
         <ul
           className={
             isDropdown
-              ? 'absolute left-full top-0 z-100 flex flex-col min-w-[100px] font-light bg-white border border-gray-400 rounded'
+              ? 'relative top-0 z-100 flex flex-col min-w-[100px] font-light bg-white border border-gray-400 rounded'
               : ''
           }
         >
